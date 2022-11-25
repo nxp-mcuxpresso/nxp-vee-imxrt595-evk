@@ -1,0 +1,16 @@
+<!--
+	ANT
+
+	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<project name="override.module">
+
+	<!--
+		Script called by MicroEJ Workbench when building the MMM module before loading module.ivy.
+	-->
+
+	<dirname file="${ant.file.override.module}" property="override.module.dir"/>
+	<property file="${override.module.dir}/module.properties"/>
+	
+</project>

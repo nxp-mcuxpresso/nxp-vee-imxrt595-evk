@@ -1,0 +1,13 @@
+# Copyright 2018-2021 MicroEJ Corp. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be found with this software.
+
+#
+# Task States
+#
+TaskState 0xFF 1=Ready, 2=Running, 3=Waiting, 4=Monitor Queued, 6=Terminated
+
+#
+# API Functions
+#
+500        New             Allocate %d bytes (free=%d, used=%d)
+501        Exception       Exception of type @C:%p@ thrown from method @A:%p:%p@ and caught in method @A:%p:%p@

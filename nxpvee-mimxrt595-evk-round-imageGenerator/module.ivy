@@ -1,0 +1,34 @@
+<!--
+	IVY
+	
+	Copyright 2020-2022 MicroEJ Corp. All rights reserved.
+        Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:m="http://www.easyant.org/ivy/maven" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
+
+    <info organisation="com.is2t.microui" module="imageGenerator-mimxrt595" status="integration" revision="1.0.0">      
+        <ea:build organisation="com.is2t.easyant.buildtypes" module="build-std-javalib" revision="2.+"/>
+		<ea:property name="javadoc.failonerror" value="false"/>
+		<ea:property name="compile.java.target.version" value="1.8"/>
+		<ea:property name="compile.java.source.version" value="1.8"/>
+    </info>
+	
+	<configurations defaultconfmapping="default->default;provided->provided">
+		<conf name="default" visibility="public" description="Runtime dependencies to other artifacts"/>
+		<conf name="provided" visibility="public" description="Compile-time dependencies to APIs provided by the platform"/>
+		<conf name="documentation" visibility="public" description="Documentation related to the artifact (javadoc, PDF)"/>
+		<conf name="source" visibility="public" description="Source code"/>
+		<conf name="dist" visibility="public" description="Contains extra files like README.md, licenses"/>
+ 		<conf name="test" visibility="private" description="Dependencies for test execution. It is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
+	</configurations>
+	
+	<publications>
+	</publications>
+	
+    <dependencies>
+        <dependency org="com.microej.pack.ui" name="ui-pack" rev="13.2.0">
+        	<artifact name="imageGenerator" type="jar"/>
+        </dependency>
+    </dependencies>
+
+</ivy-module>

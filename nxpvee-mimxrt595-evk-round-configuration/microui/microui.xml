@@ -1,0 +1,20 @@
+<!--
+	XML
+
+	Copyright 2022 MicroEJ Corp. All rights reserved.
+        Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+
+<microui>
+	<display name="DISPLAY"/>
+
+	<fonts>
+		<font file="resources/fonts/microej_system_font.ejf"/>
+	</fonts>	
+
+	<eventgenerators>
+		<touch name="TOUCH" display="DISPLAY"/>
+		<buttons name="BUTTONS"/>
+		<command name="COMMANDS"/>
+	</eventgenerators>
+</microui>

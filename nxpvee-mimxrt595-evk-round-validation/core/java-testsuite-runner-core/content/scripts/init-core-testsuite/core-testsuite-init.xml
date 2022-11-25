@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	ANT Buildfile
+
+	Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<project name="core-testsuite-init">
+
+	<import file="${scripts.dir}/extension-init.xml"/>
+
+	<target name="context/core-testsuite" extensionOf="init/context">
+
+	</target>
+
+	<target name="init/core-testsuite" extensionOf="init/execution">
+
+	</target>
+
+	<target name="finalization/core-testsuite" extensionOf="init/finalization">
+
+	</target>
+
+</project>

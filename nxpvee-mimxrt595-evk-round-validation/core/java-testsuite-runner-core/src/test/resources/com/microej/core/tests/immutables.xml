@@ -1,0 +1,115 @@
+<!-- 
+	XML
+ 
+	Copyright 2016-2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+
+<immutables>
+	<array id="array0" type="int[]">
+		<elem value="0" />
+	</array>
+	<array id="array1" type="int[]">
+		<elem value="1" />
+	</array>
+	<array id="array2" type="int[]">
+		<elem value="2" />
+	</array>
+	<array id="array3" type="int[]">
+		<elem value="3" />
+	</array>
+	<array id="array4" type="int[]">
+		<elem value="4" />
+	</array>
+	<array id="array5" type="int[]">
+		<elem value="5" />
+	</array>
+	<array id="array6" type="int[]">
+		<elem value="6" />
+	</array>
+	<array id="array7" type="int[]">
+		<elem value="7" />
+	</array>
+	<array id="array8" type="int[]">
+		<elem value="8" />
+	</array>
+	<array id="array9" type="int[]">
+		<elem value="9" />
+	</array>
+	<array id="array10" type="int[]">
+		<elem value="10" />
+	</array>
+	<array id="array11" type="int[]">
+		<elem value="11" />
+	</array>
+	<array id="array12" type="int[]">
+		<elem value="12" />
+	</array>
+	<array id="array13" type="int[]">
+		<elem value="13" />
+	</array>
+	<array id="array14" type="int[]">
+		<elem value="14" />
+	</array>
+	<array id="array15" type="int[]">
+		<elem value="15" />
+	</array>
+	<array id="array16" type="int[]">
+		<elem value="16" />
+	</array>
+	<array id="array17" type="int[]">
+		<elem value="17" />
+	</array>
+	<array id="array18" type="int[]">
+		<elem value="18" />
+	</array>
+	<array id="array19" type="int[]">
+		<elem value="19" />
+	</array>
+	<array id="array20" type="int[]">
+		<elem value="20" />
+	</array>
+	<array id="array21" type="int[]">
+		<elem value="21" />
+	</array>
+	<array id="array22" type="int[]">
+		<elem value="22" />
+	</array>
+	<array id="array23" type="int[]">
+		<elem value="23" />
+	</array>
+	<array id="array24" type="int[]">
+		<elem value="24" />
+	</array>
+	<array id="array25" type="int[]">
+		<elem value="25" />
+	</array>
+	<array id="array26" type="int[]">
+		<elem value="26" />
+	</array>
+	<array id="array27" type="int[]">
+		<elem value="27" />
+	</array>
+	<array id="array28" type="int[]">
+		<elem value="28" />
+	</array>
+	<array id="array29" type="int[]">
+		<elem value="29" />
+	</array>
+	<array id="array30" type="int[]">
+		<elem value="30" />
+	</array>
+	<array id="array31" type="int[]">
+		<elem value="31" />
+	</array>
+	<array id="array32" type="int[]">
+		<elem value="32" />
+	</array>
+	<array id="array33" type="int[]">
+		<elem value="33" />
+	</array>
+	<array id="array34" type="int[]">
+		<elem value="34" />
+	</array>
+
+</immutables>

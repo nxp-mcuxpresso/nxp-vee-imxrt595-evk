@@ -1,0 +1,29 @@
+nxpvee-mimxrt595-evk-round-fp/lib/
+nxpvee-mimxrt595-evk-round-configuration/target~/
+nxpvee-mimxrt595-evk-round-configuration/dropins/include/
+nxpvee-mimxrt595-evk-round-configuration/dropins/javaLibs/
+nxpvee-mimxrt595-evk-round-configuration/dropins/mocks/
+nxpvee-mimxrt595-evk-round-configuration/dropins/scripts/
+nxpvee-mimxrt595-evk-round-configuration/dropins/tools/license-checker.jar
+nxpvee-mimxrt595-evk-round-configuration/dropins/tools/imagegenerator-vectorimage.jar
+nxpvee-mimxrt595-evk-round-configuration/dropins/workbenchExtension_*
+nxpvee-mimxrt595-evk-round-bsp/projects/microej/platform/
+MIMXRT595-*-CM4hardfp_GCC48-*
+nxpvee-mimxrt595-evk-round-imageGenerator/bin/
+nxpvee-mimxrt595-evk-round-configuration/dropins/scripts/init-microvg/microvginit.xml
+nxpvee-mimxrt595-evk-round-bsp/projects/microej/vglite_patch/
+
+# ctags files
+tags
+TAGS
+
+# cscope files
+cscope.*
+ncscope.*
+
+# vim files
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+
+/.metadata
+/.sonarlint

@@ -1,0 +1,295 @@
+<!--
+	ANT
+
+	Copyright 2020-2021 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-platform" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		This script builds the platform in the current workspace (it uses an Eclipse ant runner in the current workspace).
+	
+		The MicroEJ Workbench file "MicroEJFramework.xml" has been modified to not export the platform project
+		in a ".jpf" file. Platform build stops before exporting the platform and does not delete the platform
+		project.
+	
+		However, when the MicroEJ SDK is launched for the very first time, the original MicroEJ Workbench file
+		"MicroEJFramework.xml" is *always* taken as the source script:
+			1- PQT copies its own "MicroEJFramework.xml" file into ${scripts.dir}, the date of the file is "now".
+			2- MicroEJ Workbench "unjar" its script in the MicroEJ SDK working directory (the date of the file is "now")
+			   (often in C: \ ... \.eclipse\com.is2t.microej.mpp.product.product_20.10_1000845000_win32_win32_x86_64\configuration\org.eclipse.osg\).
+			3- The MicroEJ Workbench copies the most recent files from the MicroEJ SDK working directory to ${scripts.dir}:
+			   the PQT file is overriden because it is older.
+			4- Finally, the MicroEJ Workbench uses its own script.
+	
+		On the second launch, the "unjar" step is not performed because the file in the working directory of 
+		the MicroEJ SDK already exists:
+			1- PQT copies its own "MicroEJFramework.xml" file into ${scripts.dir}, the date of the file is "now".
+			2- The MicroEJ Workbench copies the most recent files from the MicroEJ SDK working directory to ${scripts.dir}:
+			   the PQT file is not overriden because it is newer.
+			3- Finally, the MicroEJ Workbench uses the PQT script.
+	
+		Another case is: the platform project already exists or not. When it already exists, it may already be
+		imported into the current workspace. To avoid any Eclipse compilation error when building the platform, 
+		the platform build is done in a tmp folder. At the end of the build, the content of the tmp folder is
+		copied to expected output folder.
+	
+		The following targets manage the four cases (first launch of the SDK or not and existing project or not) 
+		to prevent any error. Additionally, the script is designed to prevent too much zip / unzip / move.
+	
+		|   | SDK first launch | Project exist || .jpf generated | jpf unzip | move required
+		|___| _________________|_______________||________________|___________|______________
+		| 1 |  yes             | no            || yes            | yes       | no
+		| 2 |  yes             | yes           || yes            | yes       | no
+		| 3 |  no              | no            || no             | no        | no
+		| 4 |  no              | yes           || no             | no        | yes
+	
+		- case 1: Build ".jpf", create the output folder (.project, etc.) and unzip jpf in the folder.
+		- case 2: Build ".jpf" and unzip jpf in the folder (to simplify the next targets, case 2 performs the steps of case 1)
+		- case 3: Build "wip" in the expected output folder
+		- case 4: Build "wip" in the tmp folder and copy it to the expected folder (nominal use case)
+	-->
+	
+	<!-- Sanity checks -->
+	<fail unless="eclipse.home" message="Set the MicroEJ SDK directory path in the `eclipse.home` property (If you are using easyant-build-component framework the full name of the property is `easyant.inject.eclipse.home`)."/>
+	<fail unless="com.microej.platformbuilder.platform.filename" message="Set the name of the `.xml` or `.platform` file in the `com.microej.platformbuilder.platform.filename` property."/>
+	
+	<!-- Global properties -->	
+	<dirname file="${ant.file.module-platform}" property="module-platform.dir"/>
+	<property name="platform.name" value="${module.name}"/>
+	<property name="platform.version" value="${ivy.revision}"/>
+	<property name="platform.architecture.repository" location="${target}/microejRepository"/>
+	<property name="eclipse-antRunner.build.target" value="module-platform:eclipseantrunner:build"/>
+	<property name="eclipse-antRunner.eclipse.home" location="${eclipse.home}"/>
+	<property name="eclipse-antRunner.build.script" location="${module-platform.dir}/module-platform/eclipseantrunner.ant"/>
+
+	<!-- Check if the MicroEJ Architecture is available --> 
+	<target name="module-platform:architecture:check" >
+
+		<fail unless="dependencies.output.dir"/>
+		
+		<!-- By default the MicroEJ Architecture is loaded from the ivy dependencies. --> 
+		<property name="microej.architecture.dir" location="${dependencies.output.dir}"/>
+		
+		<!-- Ensure at least one architecture is available in ivy file -->
+		<fail message=".${line.separator}
+			No MicroEJ Architecture found in ${microej.architecture.dir} directory.${line.separator}
+			You have to reference the MicroEJ Architecture by adding a dependency in your Ivy file (and so retrieve it using Ivy).
+			">
+			<condition>
+				<resourcecount when="equal" count="0">
+					<fileset dir="${microej.architecture.dir}" includes="*.xpf" erroronmissingdir="false"/>
+				</resourcecount>
+			</condition>
+		</fail>
+		
+		<!-- Ensure only one architecture is available in ivy file -->
+		<fail message=".${line.separator}
+			Several MicroEJ Architectures found in ${microej.architecture.dir} directory.${line.separator}
+			You have to reference only one MicroEJ Architecture by adding a dependency in your Ivy file (and so retrieve it using Ivy).
+			">
+			<condition>
+				<resourcecount when="greater" count="1">
+					<fileset dir="${microej.architecture.dir}" includes="*.xpf" erroronmissingdir="false"/>
+				</resourcecount>
+			</condition>
+		</fail>
+		
+		<!-- Set architecture file path -->
+		<pathconvert property="microej.architecture.file">
+			<first>
+				<fileset dir="${microej.architecture.dir}" includes="*.xpf"/>
+			</first>
+		</pathconvert>
+
+		<!-- Load architecture characteristics -->
+		<property url="jar:file:${microej.architecture.file}!/release.properties" prefix="microej.architecture"/>
+		
+	</target>
+	
+	<!-- Prepare platform configuration file according selected MicroEJ Architecture -->
+	<target name="module-platform:description" extensionOf="abstract-compile:compile-ready" depends="module-platform:architecture:check">
+
+		<!-- Load platform configuration file -->
+		<xmlproperty 
+			file="${project.dir}/${com.microej.platformbuilder.platform.filename}"
+			collapseAttributes="false"
+			prefix="configuration"
+		/>
+
+		<!-- Replace some platform configurations -->
+		<replace file="${project.dir}/${com.microej.platformbuilder.platform.filename}">
+			
+			<!-- Replace MicroEJ Architecture -->
+			<replacefilter token="&quot;${configuration.platform.environment(architecture)}&quot;" value="&quot;${microej.architecture.architecture}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(baseline)}&quot;" value="&quot;${microej.architecture.baseline}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(hardwarePartNumber)}&quot;" value="&quot;${microej.architecture.hardwarePartNumber}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(level)}&quot;" value="&quot;${microej.architecture.level}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(licenseTag)}&quot;" value="&quot;${microej.architecture.licenseTag}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(name)}&quot;" value="&quot;${microej.architecture.name}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(provider)}&quot;" value="&quot;${microej.architecture.provider}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(techVersion)}&quot;" value="&quot;${microej.architecture.techVersion}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(toolchain)}&quot;" value="&quot;${microej.architecture.toolchain}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform.environment(version)}&quot;" value="&quot;${microej.architecture.version}&quot;"/>
+			
+			<!-- Replace platform properties -->
+            <replacefilter token="&quot;${configuration.platform(name)}&quot;" value="&quot;${platform.name}&quot;"/>
+			<replacefilter token="&quot;${configuration.platform(version)}&quot;" value="&quot;${platform.version}&quot;"/>
+			
+		</replace>
+		
+	</target>
+	
+	<!-- Check the platform output folder -->
+	<target name="module-platform:project:check" extensionOf="abstract-compile:compile-ready" depends="module-platform:description">
+		
+		<!-- Use same naming convention than MicroEJ Workbench-->
+		<property name="platform.project.name" value="${configuration.platform(hardwarePartNumber)}-${platform.name}-${microej.architecture.toolchain}-${platform.version}"/>
+
+		<!-- Error when the platform project does not exist  -->
+        <condition property="platform.project.file.expected" value="${project.parent.dir}/${configuration.platform(hardwarePartNumber)}-${platform.project.name.expected}-${microej.architecture.toolchain}-${platform.version}/.project">
+          <isset property="platform.project.name.expected" />
+        </condition>
+		<fail message=".${line.separator}
+			Output platform '${platform.project.file.expected}' does not exist.">
+			<condition>
+			  <and>
+                    <isset property="platform.project.file.expected" />
+				    <not><available file="${platform.project.file.expected}" type="file"/></not>
+				</and>
+			</condition>
+        </fail>
+		
+		<!-- Error when output folder exists and not denote a platform project -->
+		<fail message=".${line.separator}
+			Output platform '${project.parent.dir}/${platform.project.name}' already exists and is not a platform project.${line.separator}
+			Delete it or change module name and / or version.
+			">
+			<condition>
+				<and>
+					<available file="${project.parent.dir}/${platform.project.name}/.project" type="file"/>
+					<or>
+						<not><resourcecontains resource="${project.parent.dir}/${platform.project.name}/.project" substring="jpfNature"/></not>
+						<not><resourcecontains resource="${project.parent.dir}/${platform.project.name}/.project" substring="jpfBuilder"/></not>
+						<not><resourcecontains resource="${project.parent.dir}/${platform.project.name}/.project" substring="${platform.project.name}"/></not>
+					</or>
+				</and>
+			</condition>
+		</fail>
+			
+		<condition property="platform.expected.project.exist" value="true">
+			<available file="${project.parent.dir}/${platform.project.name}" type="dir"/>
+		</condition>
+		
+		<condition property="workbench.platform.project.name" value="platformtmp" else="${platform.project.name}" >
+			<istrue value="${platform.expected.project.exist}"/>
+		</condition>
+		
+	</target>
+	
+	<!-- Delete content of existing platform before building a new one -->
+	<target name="module-platform:project:clean" extensionOf="abstract-compile:compile-ready" depends="module-platform:project:check" if="${platform.expected.project.exist}">
+		<delete includeemptydirs="true">
+			<fileset dir="${project.parent.dir}/${platform.project.name}" includes="**/*" excludes=".project"/>
+		</delete>
+	</target>
+	
+	<!-- Build the platform -->
+	<target name="module-platform:build" extensionOf="abstract-compile:compile" depends="-eclipse-antRunner:init">
+	
+		<runEclipseAntRunner>
+			<args.properties>
+				<jvmarg value="-Dmicroej.repository=${platform.architecture.repository}"/>
+				<arg value="-Djpf.configuration.file=${project.dir}/${com.microej.platformbuilder.platform.filename}"/>
+				<arg value="-Dmicroej.architecture.dir=${microej.architecture.dir}"/>
+				<arg value="-Dant.file.com.is2t.easyant.plugins;eclipse-antRunner=${ant.file.com.is2t.easyant.plugins;eclipse-antRunner}"/>
+				<arg value="-Dplatform.project.name=${workbench.platform.project.name}"/>
+				<arg value="-Dplatform.output.dir=${target}"/>
+				<arg value="-Dscripts.dir=${target}/scripts"/>
+			</args.properties>
+		</runEclipseAntRunner>
+		
+		<property name="workbench.platform.jpf" location="${target}/${platform.project.name}.jpf"/>
+		<fail message="MicroEJ Workbench has not created the expected platform">
+			<condition>
+				<and>
+					<!-- .jpf must exist when MicroEJ SDK is executed for the first time to build a platform -->
+					<not><available file="${workbench.platform.jpf}" type="file"/></not>
+					<!-- platform ouput folder must exist when MicroEJ SDK is not executed for the first time to build a platform -->
+					<not><available file="${project.parent.dir}/${workbench.platform.project.name}" type="dir"/></not>
+				</and>
+			</condition>
+		</fail>
+		
+		<condition  property="workbench.platform.jpf.unzip" value="true">
+			<available file="${workbench.platform.jpf}" type="file"/>
+		</condition>
+		
+	</target>
+	
+	<!-- MicroEJ SDK is executed for the first time to build a platform: .jpf must be unzipped -->
+	<target name="module-platform:unzip" extensionOf="abstract-compile:compile" depends="module-platform:build" if="${workbench.platform.jpf.unzip}">
+		
+		<!-- create platform/build -->
+		<mkdir dir="${project.parent.dir}/${platform.project.name}/build"/>
+		<copy todir="${project.parent.dir}/${platform.project.name}/build" flatten="true">
+			<fileset dir="${platform.architecture.repository}" includes="1.6/p*001/release.properties"/>
+		</copy>
+		
+		<!-- create/replace ".project" -->
+		<echoxml file="${project.parent.dir}/${platform.project.name}/.project" append="false">
+			<projectDescription>
+				<name>${platform.project.name}</name>
+				<comment></comment>
+				<projects>
+				</projects>
+				<buildSpec>
+					<buildCommand>
+						<name>com.is2t.microej.pro.workbench.jpfBuilder</name>
+						<arguments>
+						</arguments>
+					</buildCommand>
+				</buildSpec>
+				<natures>
+					<nature>com.is2t.microej.pro.workbench.jpfNature</nature>
+				</natures>
+			</projectDescription>
+		</echoxml>
+		
+		<!-- create platform/source -->
+		<unzip dest="${project.parent.dir}/${platform.project.name}/source" src="${workbench.platform.jpf}"/>
+		
+		<!-- delete .jpf -->
+		<delete file="${workbench.platform.jpf}"/>
+	</target>
+	
+	<!-- Copy the tmp platform in expected output platform project dir (prevent eclipse compilation error during platform build) -->
+	<target name="module-platform:move" extensionOf="abstract-compile:compile" depends="module-platform:unzip" if="${platform.expected.project.exist}" unless="${workbench.platform.jpf.unzip}">
+		<move todir="${project.parent.dir}/${platform.project.name}">
+			<fileset dir="${project.parent.dir}/${workbench.platform.project.name}" includes="**/*" excludes=".project"/>
+		</move>
+		<delete dir="${project.parent.dir}/${workbench.platform.project.name}"/>
+	</target>
+	
+	<!-- Copy the platform in target output dir -->
+	<target name="module-platform:preparePublication" extensionOf="abstract-compile:compile" depends="module-platform:move" unless="${skip.publish}">
+		<property name="platform.publish.dir" location="${target}/platform"/>
+		<copy todir="${platform.publish.dir}/${platform.project.name}">
+			<fileset dir="${project.parent.dir}/${platform.project.name}" includes="**/*"/>
+		</copy>
+	</target>
+	
+	<!-- Print a report; useful when user has changed the initial platform version because project is not available in workspace. -->
+	<target name="module-platform:report" extensionOf="package">
+		<echo message="
+			============================================================================================================${line.separator}
+			Platform has been built in this directory '${project.parent.dir}/${platform.project.name}'.${line.separator}
+			To import this project in your MicroEJ SDK workspace (if not already available):${line.separator}
+				- Select 'File' &gt; 'Import...' &gt; 'General' &gt; 'Existing Projects into Workspace' &gt; 'Next'${line.separator}
+				- Check 'Select root directory' and browse '${project.parent.dir}/${platform.project.name}' &gt; 'Finish'${line.separator}
+			============================================================================================================${line.separator}
+			"/>
+	</target>
+
+</project>

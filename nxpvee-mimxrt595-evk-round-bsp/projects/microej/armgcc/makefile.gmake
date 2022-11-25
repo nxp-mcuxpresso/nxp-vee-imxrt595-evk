@@ -1,0 +1,77 @@
+# Copyright 2022 MicroEJ Corp. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be found with this software.
+
+
+
+ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
+    detected_OS := Windows
+    CC := arm-none-eabi-gcc.exe
+    SIZE := arm-none-eabi-size.exe
+    OBJCOPY :=arm-none-eabi-objcopy.exe
+    
+else
+    detected_OS := $(shell uname)  # same as "uname -s"
+    CC := arm-none-eabi-gcc
+    SIZE := arm-none-eabi-size
+    OBJCOPY :=arm-none-eabi-objcopy
+endif
+
+$(info $$os is [${detected_OS}])
+
+RM := rm -rf
+
+# All of the sources participating in the build are defined here
+-include sources.mk
+
+USER_OBJS := ../platform/lib/microejapp.o ../platform/lib/microejruntime.a ../thirdparty/harfbuzz/lib/harfbuzz.a
+
+CFLAGS := -DCPU_MIMXRT595SFFOC_cm33
+CFLAGS += -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -nostdlib 
+CFLAGS += -O3 -fno-common -g3 -Wall -ffunction-sections -fdata-sections -ffreestanding -fno-builtin
+CFLAGS += -specs=nano.specs -MMD -MP
+
+LFLAGS := 
+LFLAGS += -Xlinker --gc-sections 
+LFLAGS += -Xlinker -print-memory-usage 
+LFLAGS += -Xlinker --sort-section=alignment 
+LFLAGS += -Xlinker -Map=mimxrt595_freertos-bsp.map
+LFLAGS += -T mimxrt595_freertos-bsp_Debug.ld
+
+OBJDIR = obj
+
+OBJS  := $(C_SRCS:.c=.o)
+OBJS  := $(foreach file,$(OBJS),$(OBJDIR)/$(notdir $(file))) 
+vpath %c $(foreach file,$(C_SRCS),$(dir $(file))) 
+
+# All Target
+all: mimxrt595_freertos-bsp.axf
+
+$(OBJS):$(OBJDIR)/%.o: %.c 
+	$(CC) -c $(CFLAGS) $(INC_DIRS) $(DEFINES) -o "$@" $<
+
+# Tool invocations
+mimxrt595_freertos-bsp.axf: $(OBJS) $(USER_OBJS)
+	@echo 'Building target: $@'
+	@echo 'Invoking: MCU C++ Linker'
+	$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) $(USER_OBJS) -o $@
+	@echo 'Finished building target: $@'
+	@echo ' '
+	$(MAKE) -f makefile.gmake --no-print-directory post-build
+
+# Other Targets
+clean:
+	-$(RM) obj/*.o
+	-$(RM) obj/*.d
+	-$(RM) mimxrt595_freertos-bsp.axf
+	-$(RM) mimxrt595_freertos-bsp.hex
+	-$(RM) mimxrt595_freertos-bsp.bin
+	-@echo ' '
+
+post-build:
+	-@echo 'Performing post-build steps'
+	-$(SIZE) "mimxrt595_freertos-bsp.axf" ; ls -1 *.ld | xargs sed -i 's/.*MCUXpresso.*//' 
+	-$(OBJCOPY) -v -O ihex "mimxrt595_freertos-bsp.axf" "mimxrt595_freertos-bsp.hex" 
+	-$(OBJCOPY) -v -O binary "mimxrt595_freertos-bsp.axf" "mimxrt595_freertos-bsp.bin" 
+	-@echo ' '
+
+.PHONY: all clean dependents post-build

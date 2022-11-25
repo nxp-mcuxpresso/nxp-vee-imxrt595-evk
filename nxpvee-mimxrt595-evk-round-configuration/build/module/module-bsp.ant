@@ -1,0 +1,54 @@
+<!--
+	ANT
+
+	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-bsp" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		This script copies the bsp into the platform (publication mode only).
+	-->
+	
+	<!-- Global properties -->
+	<dirname file="${ant.file.module-bsp}" property="module-bsp.dir"/>
+	<property file="${project.dir}/bsp/bsp.properties" prefix="bsp"/>
+
+	<!-- Sanity checks -->
+	<fail message="Property 'com.microej.platformbuilder.bsp.microejcco.relative.dir' required by mccom-install plugin, it must be set in module.ivy.">
+		<condition>
+			<and>
+				<isset property="ant.file.com.is2t.easyant.plugins;mccom-install"/>
+				<not><isset property="com.microej.platformbuilder.bsp.microejcco.relative.dir"/></not>
+			</and>
+		</condition>
+	</fail>
+
+	<!-- CCO installer requires an output dir: use ${bsp.root.dir} or dropins folder if not set -->
+	<condition property="bsp.project.microej.dir" value="${bsp.root.dir}/${com.microej.platformbuilder.bsp.microejcco.relative.dir}" else="${project.dir}/dropins/c" description="CCO output folder">
+		<and>
+			<isset property="bsp.root.dir"/>
+			<isset property="com.microej.platformbuilder.bsp.microejcco.relative.dir"/>
+		</and>
+	</condition>
+	
+	<!-- Requires -->
+	<import file="${module-bsp.dir}/module-platform.ant"/>
+	
+	<!-- Copy BSP into the platform -->
+    <target name="module-bsp:preparePublication" extensionOf="abstract-compile:compile" depends="module-platform:preparePublication" if="bsp.root.dir" unless="${skip.publish}">
+    	
+        <!-- Copy BSP unless it exists already (to prevent a recompilation) -->
+    	<copy todir="${platform.publish.dir}/${platform.project.name}/source/bsp" overwrite="false" >
+			<fileset dir="${bsp.root.dir}" includes="**/*"/>
+		</copy>
+    	
+    	<!-- BSP root dir option becomes useless (and disturbing) -->
+    	<propertyfile file="${platform.publish.dir}/${platform.project.name}/source/scripts/deployInBSP.properties">
+			<entry key="deploy.bsp.local.root.dir" operation="del"/>
+    	</propertyfile>
+    	
+    </target>
+	
+</project>

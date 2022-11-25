@@ -1,0 +1,17 @@
+<!--
+	ANT
+
+	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<project name="module" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		Script called by MicroEJ Workbench when building the MMM module.
+	-->
+
+	<!-- Import Platform Configuration Additions build file -->
+	<dirname file="${ant.file.module}" property="module.dir"/>
+	<import file="${module.dir}/build/module/module.ant"/>
+	
+</project>

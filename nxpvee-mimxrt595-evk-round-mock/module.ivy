@@ -1,0 +1,33 @@
+<!--
+	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	Copyright 2022 NXP
+-->
+<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
+	<info organisation="com.nxp.vee" module="evk_platform_mock" status="integration" revision="1.0.0">
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-microej-mock" revision="2.0.+"/>
+		<ea:property name="no.obfuscation" value="SET" />
+	</info>
+	<configurations defaultconfmapping="default->default;provided->provided">
+		<conf name="default" visibility="public" description="Runtime dependencies to other artifacts"/>
+		<conf name="provided" visibility="public" description="Compile-time dependencies to APIs provided by the platform"/>
+		<conf name="test" visibility="private" description="Dependencies for test execution. It is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
+		<conf name="platform" visibility="private" description="Build-time dependency, specify the platform to use"/>
+		<conf name="compile" visibility="private" description="Dependencies used for compilation but not embedded in the JAR"/>
+		<conf name="embedded" visibility="private" description="Dependencies embedded in the JAR"/>
+	</configurations>
+	
+	<publications>
+		<!-- keep this empty if no specific artifact to publish -->
+		<!-- must be here in order to avoid all configurations for the default artifact -->
+	</publications>
+	
+	<dependencies>
+		<!--
+			Put your project dependencies here. An example of project dependency declaration
+			is provided below:
+			
+			<dependency org="[org]" name="[otherArtifact]" rev="M.m.p" conf="embedded->default"/>
+		-->
+	</dependencies>
+</ivy-module>

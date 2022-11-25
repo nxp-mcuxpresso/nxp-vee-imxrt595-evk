@@ -1,0 +1,25 @@
+/*
+ * C
+ *
+ * Copyright 2022 MicroEJ Corp. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be found with this software.
+ */
+
+/**
+* @file
+* @brief MicroEJ Freetype wrapper on freetype c files
+* @author MicroEJ Developer Team
+* @version 2.0.0
+*/
+
+#include "microvg_configuration.h"
+#if defined (VG_FEATURE_FONT)
+
+#include "../ftbase.c"
+#include "../ftinit.c"
+#include "../autofit.c"
+#include "../pshinter.c"
+#include "../sfnt.c"
+#include "../ftsystem/ftsystem.c"
+
+#endif // defined (VG_FEATURE_FONT)

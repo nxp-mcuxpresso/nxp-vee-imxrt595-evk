@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	ANT
+	
+	Copyright 2015-2021 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<!--
+	Common scripts between 'deployInBSP.xml' and 'deployToolBSPRun.microejTool'
+-->
+<project>
+	
+	<macrodef name="deploy.getOutputDir">
+		<attribute name="type"/>
+		<attribute name="dir" default="@{type}"/>
+		<sequential>
+			
+			<!-- 
+				check if output dir is a location known by BSP 
+				(New Platform semantic based on a specifying a single BSP root directory and output relative directories) 
+			-->			
+			<condition property="deploy.bsp.microej@{type}.dir" value="${deploy.bsp.root.dir.computed}/${deploy.bsp.microej@{type}.relative.dir}">
+				<and>
+					<istrue value="${deploy.bsp.available}"/> <!-- platform build: copy in bsp allowed -->
+					<istrue value="${deploy.bsp.microej@{type}}"/> <!-- launch: use bsp output folder -->
+					<isset property="deploy.bsp.microej@{type}.relative.dir"/> 
+					<isset property="deploy.bsp.root.dir.computed"/> <!-- bsp output folder is set -->
+				</and>
+			</condition>
+
+			<!-- check if output dir is a location known by BSP 
+				(Architecture 7.10.0 semantic) 
+			-->
+			<condition property="deploy.bsp.microej@{type}.dir" value="${deploy.bsp.output.dir}/@{dir}">
+				<and>
+					<istrue value="${deploy.bsp.available}"/> <!-- platform build: copy in bsp allowed -->
+					<istrue value="${deploy.bsp.microej@{type}}"/> <!-- launch: use bsp output folder -->
+					<isset property="deploy.bsp.output.dir"/> <!-- bsp output folder is set -->
+				</and>
+			</condition>	
+			
+			<fail message="Option 'deploy.bsp.microej@{type}' is enabled but this Platform does no define a well-known location. Either update the Platform configuration (option 'deploy.bsp.microej@{type}.relative.dir' in 'bsp/bsp.properties') or disable this option.">
+				<condition>
+					<and>
+				         <istrue value="${deploy.bsp.microej@{type}}"/>
+						<not>
+							<isset property="deploy.bsp.microej@{type}.dir"/>
+						</not>
+					</and>
+				</condition>
+			</fail>
+			
+			<!-- check if output dir is a location set by user -->
+			<condition property="deploy.bsp.microej@{type}.dir" value="${deploy.dir.microej@{type}}">
+				<not><equals arg1="${deploy.dir.microej@{type}}" arg2="" trim="true"/></not> <!-- user output folder is not empty -->
+			</condition>
+			
+		</sequential>
+	</macrodef>
+	
+</project>

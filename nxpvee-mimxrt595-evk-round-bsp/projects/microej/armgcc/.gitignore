@@ -1,0 +1,9 @@
+mimxrt595_freertos-bsp.*
+jlink.script
+obj/*.o
+obj/*.d
+CMakeFiles
+cmake_install.cmake
+CmakeCache.txt
+makefile
+Makefile

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ANT Buildfile
+  
+  Copyright 2022 MicroEJ Corp. All rights reserved.
+  Use of this source code is governed by a BSD-style license that can be found with this software.
+  Copyright 2022 NXP
+  
+-->
+<project name="evk_platform_mock-s3-init">
+
+	<import file="${scripts.dir}/extension-init.xml" />
+
+	<target name="init/evk_platform_mock-s3" extensionOf="init/execution" if="onS3">
+		<augment id="hil.main.classpath">
+			<fileset dir="${platform.dir}/mocks" includes="mockevk_platform_mock.jar"/>
+		</augment>
+	</target>
+
+</project>

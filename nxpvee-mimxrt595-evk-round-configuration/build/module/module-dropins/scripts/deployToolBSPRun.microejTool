@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	ANT
+	
+	Copyright 2015-2021 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<project name="deployHookBSPRun" default="run">
+	<dirname file="${ant.file.deployHookBSPRun}" property="scripts.dir"/>
+
+	<!-- Required property passed by the testsuite harness -->
+	<fail unless="application.file"/>
+
+	<dirname file="${application.file}" property="application.dir"/>
+
+	<!-- Enable init-bsp properties computation -->
+	<property name="onBoard" value="SET"/>
+	<property name="deploy.bsp.microejscript" value="true"/>
+	
+	<import file="${scripts.dir}/init-bsp/init.xml"/>
+	<import file="${scripts.dir}/deployInBSPCommon.xml"/>
+
+	<target name="run" depends="init/bsp/options">
+		<fail message="The executable file does not exist (${application.file})">
+			<condition>
+				<not>
+					<resourceexists>
+						<file file="${application.file}" />
+					</resourceexists>
+				</not>
+			</condition>
+		</fail>
+
+		<property name="deploy.bsp.runscript.name" value="run" />
+		<condition property="deploy.bsp.microejscript.extension" value="bat" else="sh">
+			<os family="windows"/>
+		</condition>
+		<deploy.getOutputDir type="script"/>
+		
+		<property name="deploy.bsp.runscript.filename" location="${deploy.bsp.microejscript.dir}/${deploy.bsp.runscript.name}.${deploy.bsp.microejscript.extension}" />
+		<fail message="The run script file is undefined (${deploy.bsp.runscript.filename})">
+			<condition>
+				<not>
+					<resourceexists>
+						<file file="${deploy.bsp.runscript.filename}" />
+					</resourceexists>
+				</not>
+			</condition>
+		</fail>
+		<!-- Give to the run script a native OS path -->
+		<pathconvert property="application.file.target.os">
+			<path location="${application.file}"/>
+		</pathconvert>
+		<echo message="Execution of script '${deploy.bsp.runscript.filename}' with executable file '${application.file.target.os}' started..." />
+		<exec dir="${application.dir}" executable="${deploy.bsp.runscript.filename}" failonerror="true" osfamily="windows" >
+			<arg value="${application.file.target.os}"/>
+        </exec>
+        <!-- OS family `unix` matches on both Linux and MacOS. -->
+        <exec dir="${application.dir}" executable="/bin/bash" failonerror="true" osfamily="unix">
+          <arg value="${deploy.bsp.runscript.filename}" />
+          <arg value="${application.file.target.os}"/>
+        </exec>
+
+		<echo message="Execution of script '${deploy.bsp.runscript.filename}' done." />
+	</target>
+
+</project>

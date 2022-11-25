@@ -1,0 +1,16 @@
+<!--
+	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	Copyright 2022 NXP
+-->
+<project name="evk_platform_mock" xmlns:ea="antlib:org.apache.easyant">
+
+	<ea:plugin module="abstract-compile" revision="0.9" />
+	
+    <target name="-evk_platform_mock:augment-classpath" extensionOf="abstract-compile:compile-ready">
+    	<ea:path pathid="compile.main.classpath" overwrite="append">
+			<fileset dir="${basedir}/lib" includes="HILEngine.jar" />
+		</ea:path>
+    </target>
+
+</project>

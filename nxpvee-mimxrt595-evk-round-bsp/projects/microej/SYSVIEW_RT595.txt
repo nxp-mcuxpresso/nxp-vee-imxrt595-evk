@@ -1,0 +1,69 @@
+#
+# SystemView Description File
+#    
+# Copyright 2020 MicroEJ Corp. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be found with this software.
+#
+
+NamedType VGLITE_OP 1=VGLITE_CLEAR
+NamedType VGLITE_OP 2=VGLITE_DRAW
+NamedType VGLITE_OP 3=VGLITE_DRAW_GRAD
+NamedType VGLITE_OP 4=VGLITE_BLIT
+NamedType VGLITE_OP 5=VGLITE_BLIT_RECT
+
+#
+# VGLite
+#
+# Offset: 100
+#
+
+101         VGLITE_init_gpu                 %VGLITE_OP
+
+#
+# LLVGLite
+#
+# Offset: 200
+#
+
+212         LLVGLITE_draw_path              
+213         LLVGLITE_draw_grad              
+
+221         LLVGLITE_matrix_identity        
+222         LLVGLITE_matrix_translate       
+223         LLVGLITE_matrix_rotate          
+224         LLVGLITE_matrix_scale           
+
+#
+# VGLite_HAL
+#
+# Offset: 300
+#
+
+#
+# Display task
+#
+# Offset: 400
+#
+
+#
+# Vector Font
+#
+# Offset: 500
+#
+
+511         LLVECTOR_FONT_init              
+512         LLVECTOR_FONT_load_font         
+
+521         LLVECTOR_FONT_string_width      
+
+531         LLVECTOR_FONT_init_gradient     
+532         LLVECTOR_FONT_close_gradient    
+
+541         LLVECTOR_FONT_draw_string       (%d characters)
+542         LLVECTOR_FONT_draw_string_arc   (%d characters)
+
+#
+# MVG
+#
+# Offset: 600
+#

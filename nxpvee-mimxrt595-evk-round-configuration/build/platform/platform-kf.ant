@@ -1,0 +1,25 @@
+<!--
+	ANT
+
+	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="platform-kf">
+
+	<!--
+		Copy systematically LLKERNEL*.h files even if kf module is not checked. The specification is to
+		have a BSP kf compatible. 
+	-->
+	<target name="platform-kf:include" extensionOf="platform/customization" unless="${group.kf.selected}">
+        <!-- property "ant.mjvm.dir" is set by MicroEJ Architecture build scripts -->
+        <!-- Copy unless the files exists already (to prevent a recompilation) -->
+		<copy todir="${jpf.dir}" overwrite="false" >
+			<!-- MicroEJ Architecture before 7.14.0 -->
+			<fileset dir="${ant.mjvm.dir}/../_implementations/kf/" includes="**/*/LLKERNEL*.h" erroronmissingdir="false"/>
+			<!-- MicroEJ Architecture since 7.14.0 -->
+			<fileset dir="${ant.mjvm.dir}/../_implementations/multi/" includes="**/*/LLKERNEL*.h" erroronmissingdir="false"/>
+		</copy>
+	</target>
+	
+</project>

@@ -1,0 +1,57 @@
+<!--
+	ANT
+
+	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="build-platform">
+
+	<!--
+		This script is called within an Eclipse context (see "runEclipseAntRunner" task); the eclipse is 
+		a MicroEJ SDK. It invokes MicroEJ Workbench internal targets to create a MicroEJ architecture 
+		repository and to build a platform in workspace.
+	-->
+	
+	<fail unless="microej.repository"/>
+	<fail unless="microej.architecture.dir"/>
+	<fail unless="jpf.configuration.file"/>
+	<fail unless="scripts.dir"/>
+	
+	<dirname file="${ant.file.build-platform}" property="build-platform.dir"/>
+	
+	<!--
+		Build the platform in workspace
+	-->
+	<target name="module-platform:eclipseantrunner:build" depends="module-platform:eclipseantrunner:repository">
+    	<echo message="[LOG] Build ${jpf.configuration.file} in LOCAL"/>
+		<echo message="buildLabel=${buildLabel}"/>
+
+		<!-- replace a MicroEJ Workbench script by the local one -->
+		<copy todir="${scripts.dir}" file="${build-platform.dir}/MicroEJFramework.xml"/>
+
+		<!-- invokes MicroEJ Workbench to build the platform (output dir is required for very first launch of MicroEJ SDK) -->
+    	<microej.exportJavaPlatformConfiguration
+    		jpfconfiguration="${jpf.configuration.file}" 
+    		outputdir="${platform.output.dir}" 
+    	/>
+    </target>
+
+	
+	<!--
+		Create and fill the MicroEJ architecture repository
+	-->
+	<target name="module-platform:eclipseantrunner:repository">
+
+		<!-- Informative status trace -->
+		<echo message="[LOG] Importing XPFs and XPFPs from ${microej.architecture.dir}"/>
+		<path id="architecture.path">
+			<fileset dir="${microej.architecture.dir}" includes="*.xpf,*.xpfp"/>
+		</path>		
+		<!-- install xpf & cie -->
+		<microej.importPlatforms overwrite="true" repository="${microej.repository}">
+			<path refid="architecture.path"/>
+		</microej.importPlatforms>
+	</target>
+
+</project>

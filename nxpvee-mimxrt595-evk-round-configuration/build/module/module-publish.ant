@@ -1,0 +1,38 @@
+<!--
+	ANT
+
+	Copyright 2020-2021 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-publish" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		This script publishes all platform elements.
+	-->
+
+	<!-- Publish main artifact (platform) -->
+	<target name="module-publish:platform" extensionOf="package" depends="readme:init,changelog:init" unless="${skip.publish}">
+		<zip destfile="${target.main.artifact}.zip" basedir="${platform.publish.dir}"/>
+		<ea:registerartifact ext="zip" type="zip" settingsRef="${project.ivy.instance}" confs="default"/>
+	</target>
+
+	<!-- Publish additional README file -->
+	<target name="module-publish:additional-files:readme" extensionOf="package" if="has.additional.readme.file" unless="${skip.publish}">
+		<copy todir="${target.artifacts}" file="${additional.readme.file}" />
+		<ea:registerartifact name="${additional.readme.name}" type="${additional.readme.ext}" ext="${additional.readme.ext}" settingsRef="${project.ivy.instance}" confs="dist" />
+	</target>
+
+	<!-- Publish additional CHANGELOG file -->
+	<target name="module-publish:additional-files:changelog" extensionOf="package" if="has.additional.changelog.file" unless="${skip.publish}">
+		<copy todir="${target.artifacts}" file="${additional.changelog.file}" />
+		<ea:registerartifact name="${additional.changelog.name}" type="${additional.changelog.ext}" ext="${additional.changelog.ext}" settingsRef="${project.ivy.instance}" confs="dist" />
+	</target>
+
+	<!-- Publish additional RELEASENOTES file -->
+	<target name="module-publish:additional-files:releasenotes" extensionOf="package" if="has.additional.releasenotes.file" unless="${skip.publish}">
+		<copy todir="${target.artifacts}" file="${additional.releasenotes.file}" />
+		<ea:registerartifact name="${additional.releasenotes.name}" type="${additional.releasenotes.ext}" ext="${additional.releasenotes.ext}" settingsRef="${project.ivy.instance}" confs="dist" />
+	</target>
+
+</project>

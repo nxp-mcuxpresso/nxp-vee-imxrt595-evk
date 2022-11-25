@@ -1,0 +1,25 @@
+<!--
+	ANT
+
+	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-license" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		This script fills the folder used as MicroEJ Architecture repository with the available evaluation licenses.
+		These evaluation licenses are copied from ${user.home}/.microej/licenses/*.zip.
+	-->
+
+	<!-- Global properties -->
+	<dirname file="${ant.file.module-license}" property="module-license.dir"/>
+
+	<!-- Copy available license files -->
+	<target name="module-license:eval" extensionOf="abstract-compile:compile-ready">
+		<java classpath="${module-license.dir}/module-dropins/tools/license-checker.jar" classname="com.microej.tool.WorkbenchKeystoreSynchronizer">
+			<sysproperty key="licenses.working.dir" value="${platform.architecture.repository}/1.6/data/keystore"/>
+		</java>
+	</target>
+	
+</project>

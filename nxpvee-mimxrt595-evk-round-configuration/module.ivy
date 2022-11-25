@@ -1,0 +1,51 @@
+<!--
+	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	Copyright 2022 NXP
+-->
+<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:m="http://ant.apache.org/ivy/extra" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
+    <info organisation="com.nxp.vee" module="evk_platform" status="integration" revision="1.0.0">
+        <ea:build organisation="com.is2t.easyant.buildtypes" module="build-custom" revision="1.+"/>
+    	<ea:plugin org="com.is2t.easyant.plugins" module="eclipse-antRunner" revision="1.+"/>
+    	<ea:plugin org="com.is2t.easyant.plugins" module="mam" revision="1.+"/>
+    	<ea:plugin org="com.is2t.easyant.plugins" module="ivy-retrieve" revision="1.+"/>
+    	<ea:plugin org="com.is2t.easyant.plugins" module="mccom-install" revision="1.3.+"/>
+		<ea:property name="com.microej.platformbuilder.bsp.microejcco.relative.dir" value="projects/microej" description="BSP relative folder where deploying the CCOs."/> 
+    </info>
+    
+    <configurations>
+        <conf name="default" visibility="public" description="runtime dependencies artifact can be used with this conf"/>
+        <conf name="test" visibility="private" description="this scope indicates that the dependency is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
+        <conf name="provided" visibility="public" description="this is much like compile, but indicates you expect the JDK or a container to provide it. It is only available on the compilation classpath, and is not transitive."/>
+        <conf name="source" visibility="public" description="source code and architectures"/>
+		<conf name="documentation" visibility="public" description="socumentation files"/>
+    </configurations>
+    
+    <publications>
+	</publications>
+    
+    <dependencies>
+    
+		<!-- architectures -->
+		<dependency org="com.microej.architecture.CM4.${xpf.toolchain.name}" name="${xpf.name}" rev="${xpf.revision}">
+			<artifact name="${xpf.name}" m:classifier="${com.microej.platformbuilder.architecture.usage}" ext="xpf"/>
+		</dependency>
+		<dependency transitive="false" org="com.microej.architecture.CM4.${xpf.toolchain.name}" name="${xpf.name}-ui-pack" rev="13.3.1">
+			<artifact name="${xpf.name}-ui-pack" ext="xpfp"/>
+		</dependency>
+		<dependency org="com.microej.pack.vg" name="vg-pack" rev="1.1.1"/>
+	    <!-- CCO begin 
+		<dependency org="com.microej.clibrary.llimpl" name="trace-systemview" rev="2.1.2" transitive="false"/>
+		<dependency org="com.microej.clibrary.thirdparty" name="systemview" rev="1.3.1"  transitive="false"/>
+		<dependency org="com.microej.clibrary.thirdparty" name="systemview-freertos10" rev="1.1.1" transitive="false"/>
+		<dependency org="com.microej.clibrary.llimpl" name="microvg-vglite" rev="3.0.0" />
+		<dependency org="com.microej.clibrary.thirdparty" name="harfbuzz" rev="1.0.0" transitive="false"/>-->
+		
+        <!-- CCO end -->
+        
+        <!-- mocks -->
+        <dependency org="com.nxp.vee" name="evk_platform_mock" rev="1.0.0"/>
+
+    </dependencies>
+    
+</ivy-module>

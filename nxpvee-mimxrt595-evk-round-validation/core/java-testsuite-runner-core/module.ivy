@@ -1,0 +1,34 @@
+<!--
+	Ivy
+	
+	Copyright 2020-2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
+	<!-- Please synchronize the version of this module with the one in MicroejCoreValidation.java -->
+	<info organisation="com.microej.architecture.generic" module="core-testsuite" status="integration" revision="3.1.0">
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-microej-javaimpl" revision="4.+"/>
+		<ea:property name="target.main.classes" value="${basedir}/target~/test/classes"/>
+		<ea:property name="addon-processor.src.test.java.path.ref.name" value="src.java.path"/>
+	</info>
+
+	<configurations defaultconfmapping="default->default;provided->provided">
+		<conf name="default" visibility="public" description="Runtime dependencies to other artifacts"/>
+		<conf name="provided" visibility="public" description="Compile-time dependencies to APIs provided by the platform"/>
+		<conf name="documentation" visibility="public" description="Documentation related to the artifact (javadoc, PDF)"/>
+		<conf name="dist" visibility="public" description="Contains extra files like README.md, licenses"/>
+		<conf name="source" visibility="public" description="Source code"/>
+ 		<conf name="test" visibility="private" description="Dependencies for test execution. It is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
+	</configurations>
+
+	<publications>
+		<!-- keep this empty if no specific artifact to publish -->
+	</publications>
+
+	<dependencies>
+		<dependency org="ej.api" name="edc" rev="1.2.3"/>
+		<dependency org="ej.api" name="bon" rev="1.2.3"/>
+
+		<dependency org="ej.library.test" name="junit" rev="1.5.0"/>
+	</dependencies>
+</ivy-module>

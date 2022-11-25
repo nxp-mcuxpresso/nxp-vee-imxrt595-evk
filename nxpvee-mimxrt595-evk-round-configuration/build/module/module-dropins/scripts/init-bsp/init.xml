@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	ANT
+ 
+	Copyright 2019-2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<project name="init-bsp">
+
+	<import file="${scripts.dir}/extension-init.xml" />
+
+	<property name="deploy.bsp.properties.file" location="${scripts.dir}/deployInBSP.properties"/>
+	
+	<!-- Fix the deployment script -->
+	<property name="deploy.script" value="deployInBSP.xml"/>
+	
+	<target name="init/bsp/options" extensionOf="init/workbench" if="onBoard" depends="init/bsp/defaultRootDir">
+	</target>	
+
+	<macrodef name="init.deploy.bsp.element.default.value">
+		<attribute name="type"/>
+		<sequential>
+			<condition property="deploy.bsp.microej@{type}" value="true" else="false">
+				<isset property="deploy.bsp.microej@{type}.relative.dir"/>
+			</condition>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="init.deploy.bsp.bsp.root.dir.required">
+		<attribute name="type"/>
+		<sequential>
+			<condition property="deploy.bsp.root.dir.required" value="true">
+				<istrue value="${deploy.bsp.microej@{type}}"/>
+			</condition>
+			<condition property="deploy.bsp.root.dir.required.optioncause" value="deploy.bsp.microej@{type}">
+				<istrue value="${deploy.bsp.microej@{type}}"/>
+			</condition>
+		</sequential>
+	</macrodef>
+	
+	<target name="init/bsp/check" if="onBoard">
+		<!-- Load the platform BSP properties file -->
+		<loadproperties srcfile="${deploy.bsp.properties.file}"/>
+
+		<!-- Initialize default values for automatic deployment properties, in case they have not been explicitely set -->
+		<!-- 'microejapp.o', 'microejruntime.a' and '.h' LL header files are automatically copied by default if the Platform defines a relative location -->
+		<init.deploy.bsp.element.default.value type="app"/>
+		<init.deploy.bsp.element.default.value type="inc"/>
+		<init.deploy.bsp.element.default.value type="lib"/>
+		<!-- 
+			Even if a relative directory has been specified by the Platform, the build script is not invoked by default.  
+			The option has to be explicitly set to 'true' by the application developer
+		-->
+		<property name="deploy.bsp.microejscript" value="false"/>
+
+		
+		<!--
+			Check if the property 'deploy.bsp.root.dir' must be initialized
+			(silently do nothing if the platform has not been configured to output to a BSP location or if none of the 4 output well known options is set) 
+		-->
+		<init.deploy.bsp.bsp.root.dir.required type="app"/>
+		<init.deploy.bsp.bsp.root.dir.required type="lib"/>
+		<init.deploy.bsp.bsp.root.dir.required type="inc"/>
+		<init.deploy.bsp.bsp.root.dir.required type="script"/>
+	</target>
+
+	<target name="init/bsp/defaultRootDir" depends="init/bsp/check" if="deploy.bsp.root.dir.required">
+		<!-- 
+			Set the option 'deploy.bsp.root.dir.computed' to the BSP location
+		-->		
+		
+		<!-- 
+			Connect to application option 'deploy.bsp.root.dir' if not empty
+		-->
+		<condition property="deploy.bsp.root.dir.computed" value="${deploy.bsp.root.dir}">
+			<and>
+				<isset property="deploy.bsp.root.dir"/>		
+				<not>
+					<equals arg1="" arg2="${deploy.bsp.root.dir}"/>
+				</not>
+			</and>
+		</condition>
+		<condition property="deploy.bsp.root.dir.source" value="application option 'deploy.bsp.root.dir'">
+			<and>
+				<isset property="deploy.bsp.root.dir"/>		
+				<not>
+					<equals arg1="" arg2="${deploy.bsp.root.dir}"/>
+				</not>
+			</and>
+		</condition>
+		
+		
+		<!-- 
+			Connect to the property 'deploy.bsp.local.root.dir' defined at platform build, only if the directory exist (local usage)
+		-->
+		<condition property="deploy.bsp.root.dir.computed" value="${deploy.bsp.local.root.dir}">
+			<resourceexists>
+				<file file="${deploy.bsp.local.root.dir}"/>
+			</resourceexists>
+		</condition>
+		<condition property="deploy.bsp.root.dir.source" value="platform option 'root.dir' in 'bsp/bsp.properties'">
+			<resourceexists>
+				<file file="${deploy.bsp.local.root.dir}"/>
+			</resourceexists>
+		</condition>
+
+		<!--
+			Connect to the Platform BSP directory, only if the platform includes the BSP
+		-->
+		<condition property="deploy.bsp.root.dir.computed" value="${platform.dir}/bsp">
+			<resourceexists>
+				<file file="${platform.dir}/bsp"/>
+			</resourceexists>
+		</condition>
+		<condition property="deploy.bsp.root.dir.source" value="platform included 'bsp' folder">
+			<resourceexists>
+				<file file="${platform.dir}/bsp"/>
+			</resourceexists>
+		</condition>
+		
+		<!--
+			Connect to the legacy 'toolchain.dir' built-in option used in .jpf and 'microej-ri' build type.
+			This allow to directly pass the BSP directory from a build option (module.ivy)
+			without having to declare a module.ant file.
+			
+			<target name="bsp:custom-properties" extensionOf="platform-launcher:custom-properties">
+      				<echoProperty property="deploy.bsp.root.dir" value="path_to_bsp/" file="${build-and-deploy.target.properties.file}" />
+			</target>
+		-->
+		<condition property="deploy.bsp.root.dir.computed" value="${toolchain.dir}">
+			<isset property="toolchain.dir"/>
+		</condition>
+		<condition property="deploy.bsp.root.dir.source" value="build option 'toolchain.dir'">
+			<isset property="toolchain.dir"/>
+		</condition>		
+		
+		<fail message="Please specify the BSP project location (application option 'deploy.bsp.root.dir'), or disable option '${deploy.bsp.root.dir.required.optioncause}'.">
+			<condition>
+				<not>
+					<isset property="deploy.bsp.root.dir.computed"/>
+				</not>		
+			</condition>			
+		</fail>
+		<echo message="Platform connected to BSP location '${deploy.bsp.root.dir.computed}' using ${deploy.bsp.root.dir.source}."/>
+	</target>
+
+</project>

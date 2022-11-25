@@ -1,0 +1,51 @@
+<!--
+	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	Copyright 2022 NXP
+-->
+
+<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:m="http://ant.apache.org/ivy/extra" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
+	<info organisation="com.nxp" module="evk_round_apps" status="integration" revision="0.1.0">
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-firmware-singleapp" revision="2.1.+">
+			<ea:property name="application.main.class" value="com.nxp.Main" />
+			<ea:property name="test.run.includes.pattern" value="**/_AllTests_*.class"/>
+			<!--
+				Use property 'platform-loader.target.platform.dir' to set the platform to use. or uncomment the platform dependency (see below).
+				<ea:property name="platform-loader.target.platform.dir" value="[path-to-local-platform]" />
+			-->
+		</ea:build>
+	</info>
+	
+	<configurations defaultconfmapping="default->default;provided->provided;vdruntime->default">
+		<conf name="default" visibility="public" description="Runtime dependencies to other artifacts"/>
+		<conf name="provided" visibility="public" description="Compile-time dependencies to APIs provided by the platform"/>
+		<conf name="vdruntime" visibility="public" description="Dependency needed only by the the player"/>
+		<conf name="platform" visibility="private" description="Build-time dependency, specify the platform to use"/>
+		<conf name="documentation" visibility="public" description="Documentation related to the artifact (javadoc, PDF)"/>
+		<conf name="source" visibility="public" description="Source code"/>
+		<conf name="dist" visibility="public" description="Contains extra files like README.md, licenses"/>
+		<conf name="test" visibility="private" description="Dependencies for test execution. It is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
+	</configurations>
+	
+	<publications>
+		<!-- keep this empty if no specific artifact to publish -->
+		<!-- must be here in order to avoid all configurations for the default artifact -->
+	</publications>
+	
+	<dependencies>
+		<!--
+			Put MicroEJ API dependencies and other dependencies here.
+		-->
+		<dependency org="ej.api" name="edc" rev="1.3.3" />
+		<dependency org="ej.api" name="microui" rev="3.1.0"/>
+		<dependency org="ej.api" name="drawing" rev="1.0.3"/>
+		<dependency org="ej.api" name="microvg" rev="1.1.1"/>
+		<dependency org="ej.library.ui" name="mwt" rev="3.2.1"/>
+
+		<dependency conf="test->*" org="ej.library.test" name="junit" rev="1.7.1"/>
+		<!--
+			Example of Platform dependency
+			<dependency org="com.mycompany" name="platform" rev="1.0.0" conf="platform->default" transitive="false"/>
+		-->
+	</dependencies>
+</ivy-module>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  	ANT
+	
+	Copyright 2015-2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<project name="emb.default" default="board">
+
+	<!-- Backward compatible for MicroEJ SDK 5.1.x for firmware and testsuite -->
+	
+	<import file="embPartialLink.microejLaunch"/>
+
+</project>

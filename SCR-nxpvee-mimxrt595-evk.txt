@@ -1,0 +1,333 @@
+Release Name: NXPVEE-MIMXRT595-EVK
+Release Version: 1.0.0
+Package License: EULA_EVAL.txt v13 April 2019
+
+SDK_Peripheral_Driver      Name: SDK Peripheral Driver
+                           Version: 2.x.x
+                           Outgoing License: BSD-3-Clause
+                           License File: Licenses/COPYING-BSD-3
+                           Format: source code
+                           Description: Peripheral drivers are designed for
+                           the most common use cases identified for the
+                           underlying hardware block.
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/devices/<device>/drivers
+                           Origin: NXP (BSD-3-Clause)
+
+SDK_Examples               Name: SDK examples
+                           Version: NA
+                           Outgoing License: BSD-3-Clause
+                           License File: Licenses/COPYING-BSD-3
+                           Format: source code, binary, project files, linker
+                           files
+                           Description: SDK out of box examples to show how
+                           to use peripheral drivers and integrate
+                           middleware.
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/boards/<board>/
+                           Origin: NXP (BSD-3-Clause)
+
+SDK_Device                 Name: SDK SoC files
+                           Version: NA
+                           Outgoing License: BSD-3-Clause
+                           License File: Licenses/COPYING-BSD-3
+                           Format: source code, linker files
+                           Description: Device system files, template files,
+                           IDE related startup and linker files.
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/devices/<device>/
+                           Origin: NXP (BSD-3-Clause)
+
+cmsis                      Name: CMSIS
+                           Version: 5.8.0
+                           Outgoing License: Apache License 2.0
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/sdk/CMSIS/LICENSE.txt
+                           Format: source code
+                           Description: Vendor-independent hardware
+                           abstraction layer for microcontrollers that are
+                           based on Arm Cortex processors, distributed by
+                           ARM. cores
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/CMSIS/
+                           Origin: ARM (Apache-2.0) -
+                           https://github.com/ARM-software/CMSIS_5/releases/t
+                           ag/5.8.0
+
+SDK_Components             Name: SDK components and board peripheral drivers
+                           Version: NA
+                           Outgoing License: BSD-3-Clause
+                           License File: Licenses/COPYING-BSD-3
+                           Format: source code
+                           Description: SDK components and board peripheral
+                           drivers, for example, flash and codec drivers.
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/components/
+                           Origin: NXP (BSD-3-Clause), ITE (BSD-3-Clause)
+
+freertos_kernel            Name: FreeRTOS
+                           Version: 10.4.3_rev1
+                           Outgoing License: MIT
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos/freertos_kernel/LICENSE.md
+                           Format: source code
+                           Description: Open source RTOS kernel for small
+                           devices
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos/freertos_kernel
+                           Origin: Amazon (MIT)
+                           Url: https://aws.amazon.com/freertos/
+
+freertos_kernel            Name: FreeRTOS
+                           Version: 10.2.1
+                           Outgoing License: MIT
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos/freertos_kernel/LICENSE.md
+                           Format: source code
+                           Description: Open source RTOS kernel for small
+                           devices
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/amazon-freertos/freertos_kernel
+                           Origin: Amazon (MIT)
+                           Url: https://aws.amazon.com/freertos/
+
+aws_iot                    Name: AWS IoT
+                           Version: 202107.0.0_rev1
+                           Outgoing License: MIT
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos/LICENSE
+                           Format: source code
+                           Description: IoT operating system for
+                           microcontrollers
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos
+                           Origin: Amazon (MIT)
+                           Url: https://aws.amazon.com/freertos/
+
+cmsis_drivers              Name: SDK CMSIS Peripheral Drivers
+                           Version: 2.x.x
+                           Outgoing License: Apache License 2.0
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/sdk/CMSIS/LICENSE.txt
+                           Format: source code
+                           Description: CMSIS Peripheral drivers are designed
+                           to provide hardware independent APIs which make
+                           application reusable across a wide range of
+                           supported microcontroller devices.
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/devices/<device>/cmsis_drivers
+                           Origin: NXP (Apache License 2.0)
+
+vglite                     Name: vglite
+                           Version: 3.0.15_rev4
+                           Outgoing License: MIT
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/sdk/middleware/vglite/LICENSE.txt
+                           Format: source code
+                           Description: VeriSilicon's platform independent
+                           VGLite Graphics library
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/middleware/vglite
+                           Origin: VeriSilicon (http://www.verisilicon.com/)
+                           Url: http://www.verisilicon.com/
+
+mcufont                    Name: mcufont
+                           Version: 1.0
+                           Outgoing License: MIT
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/sdk/middleware/vglite/font/mcufont/LICENSE
+                           Format: source code
+                           Description: Font rendering library for
+                           microcontrollers
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/middleware/vglite/font/mcufont
+                           Origin: Petteri Aimonen
+                           (https://github.com/PetteriAimonen)
+                           Url: https://github.com/mcufont/mcufont
+
+FreeType                   Name: FreeType
+                           Version: 2.11
+                           Outgoing License: FTL
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/projects/microej/thirdparty/freetype/FTL.TXT
+                           Format: source code
+                           Description: Software library to render fonts
+                           Location: nxpvee-mimxrt595-evk-round-bsp/projects/microej/thirdparty/freetype
+                           Origin: The FreeType Project (http://freetype.org/license.html)
+                           Url: https://gitlab.freedesktop.org/freetype/freetype.git
+
+HarfBuzz                   Name: HarfBuzz
+                           Version: 4.2.1
+                           Outgoing License: Old MIT
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/projects/microej/thirdparty/harfbuzz/COPYING
+                           Format: source code
+                           Description: Text shaping library
+                           Location: nxpvee-mimxrt595-evk-round-bsp/projects/microej/thirdparty/harfbuzz
+                           Origin: HarfBuzz Project (https://harfbuzz.github.io/)
+                           Url: https://github.com/harfbuzz/harfbuzz
+
+SystemView Target Sources  Name: SystemView Target Sources
+                           Version: 2.52a
+                           Outgoing License: SEGGER BSD
+                           License File:
+                           nxpvee-mimxrt595-evk-round-bsp/projects/microej/thirdparty/systemview/LICENSE
+                           Format: source code
+                           Description: Target code for real-time recording and visualization tool
+                           Location: nxpvee-mimxrt595-evk-round-bsp/projects/microej/thirdparty/systemview
+                                     nxpvee-mimxrt595-evk-round-bsp/projects/microej/thirdparty/systemview-freertos
+                           Origin: SEGGER (https://www.segger.com)
+                           Url: https://www.segger.com/downloads/systemview/SystemView_Src_V252a.zip
+
+SimpleGFX                  Name: SimpleGFX
+                           Version: 0.1
+                           Outgoing License: BSD-3-Clause
+                           License File: nxpvee-mimxrt595-evk-round-apps/LICENSE
+                           Format: source code
+                           Description: example of a graphics VEE application
+                           Location: nxpvee-mimxrt595-evk-round-apps/src/main/java/com/nxp/simpleGFX
+                           Origin: NXP (BSD-3-Clause)
+
+AnimatedMascot             Name: AnimatedMascot
+                           Version: 0.1
+                           Outgoing License: BSD-3-Clause
+                           License File: nxpvee-mimxrt595-evk-round-apps/LICENSE
+                           Format: source code
+                           Description: VEE application demonstrating vectorial animation
+                           Location: nxpvee-mimxrt595-evk-round-apps/src/main/java/com/nxp/animatedMascot
+                           Origin: NXP (BSD-3-Clause)
+
+MicroEJ BSP                Name: MicroEJ BSP
+                           Version: 1.x.x
+                           Outgoing License: BSD-3-Clause
+                           License File: Licenses/COPYING-BSD-3
+                           Format: source code
+                           Description: Board support package for i.MX RT595
+                           Location: nxpvee-mimxrt595-evk-round-bsp/project/microej (excluding subdirectory
+                           thirdparty)
+                           Origin: MicroEJ (https://www.microej.com/)
+
+MicroEJ EDC                Name: Embedded Device Configuration (EDC)
+                           Version: 1.3.3
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Implementation of the minimal standard runtime environment for
+                           embedded devices
+                           Location: dependency of nxpvee-mimxrt595-evk-round-configuration/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/ApplicationDeveloperGuide/runtime.html?highlight=edc#embedded-device-configuration-edc
+
+MicroEJ BON                Name: Beyond Profile (BON)
+                           Version: 1.4.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Control memory usage and start-up sequences
+                           Location: dependency of nxpvee-mimxrt595-evk-round-configuration/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/ApplicationDeveloperGuide/runtime.html?highlight=edc#beyond-profile-bon
+
+MicroUI                    Name: MicroUI
+                           Version: 3.1.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Enable the creation of user interface in Java
+                           Location: dependency of nxpvee-mimxrt595-evk-round-configuration/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/ApplicationDeveloperGuide/UI/MicroUI/index.html?highlight=microui
+
+MicroVG                    Name: MicroVG
+                           Version: 1.1.1
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Vector drawing library
+                           Location: dependency of nxpvee-mimxrt595-evk-round-configuration/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/ApplicationDeveloperGuide/UI/MicroVG/index.html?highlight=microvg
+
+MWT                        Name: Micro Widget Toolkit 
+                           Version: 3.2.1
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Symplify the creation and use of graphical user interface widgets in Java
+                           Location: dependency of nxpvee-mimxrt595-evk-round-apps/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/ApplicationDeveloperGuide/UI/MWT/index.html
+
+WIDGET                     Name: Widget Toolkit 
+                           Version: 2.0.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Provides very common widgets with basic implementations. 
+                           Location: dependency of nxpvee-mimxrt595-evk-round-apps/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/ApplicationDeveloperGuide/UI/Widgets/widget.html
+
+DRAWING                    Name: Drawing
+                           Version: 1.0.3
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Contains shapes rendering and image with transformation rendering algorithms
+                           Location: transitive dependency of nxpvee-mimxrt595-evk-round-apps/module.ivy
+                           Origin: MicroEJ
+                           Url: https://repository.microej.com/javadoc/microej_5.x/apis/ej/drawing/package-summary.html
+
+BASICTOOL                  Name: Basic Tool
+                           Version: 1.5.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Miscellaneous tools
+                           Location: transitive dependency of nxpvee-mimxrt595-evk-round-apps/module.ivy
+                           Origin: MicroEJ
+                           Url: https://repository.microej.com/javadoc/microej_5.x/apis/ej/basictool/package-summary.html
+
+COLLECTIONS                Name: Collections
+                           Version: 1.3.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Static methods that operate on or return collections
+                           Location: transitive dependency of nxpvee-mimxrt595-evk-round-apps/module.ivy
+                           Origin: MicroEJ
+                           Url: https://repository.microej.com/javadoc/microej_5.x/apis/index.html?java/util/Collections.html
+
+JUNIT                      Name: Junit
+                           Version: 1.7.1
+                           Outgoing License: Eclipse Public License - v 1.0
+                           License File: https://spdx.org/licenses/EPL-1.0.html
+                           Description: Unit test framework
+                           Location: dependency of nxpvee-mimxrt595-evk-round-apps/module.ivy
+                           Origin: JUNIT
+                           Url: https://junit.org/
+
+FRONTPANEL                 Name: Frontpanel
+                           Version: 13.1.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Frontpanel creation library
+                           Location: dependency of nxpvee-mimxrt595-evk-round-fp/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/PlatformDeveloperGuide/frontpanel.html
+
+
+FRAMEWORK                  Name: Frontpanel Framework Library
+                           Version: 1.1.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Frontpanel framework creation library
+                           Location: dependency of nxpvee-mimxrt595-evk-round-fp/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/PlatformDeveloperGuide/frontpanel.html
+
+HILEngine                  Name: Hardware In the Loop interface
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Simulates Java-to-C calls.
+                           Location: dependency of nxpvee-mimxrt595-evk-round-mock/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/PlatformDeveloperGuide/simulation.html
+
+IMAGEGENERATOR             Name: Image Generator
+                           Version: 13.2.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: Off-board tool in charge of generating image data
+                           Location: dependency of nxpvee-mimxrt595-evk-round-fp/module.ivy
+                           Origin: MicroEJ
+                           Url: https://docs.microej.com/en/latest/PlatformDeveloperGuide/uiImageGenerator.html
+
+ARCHITECTURE               Name: Microej Architecture Image Generator
+                           Version: flopi4G25-7.17.0
+                           Outgoing License: MicroEJ SDK EULA
+                           License File: Licenses/MICROEJ_SDK_EULA.txt
+                           Description: MicroEJ Architecture for GNU Tools for ARM Embedded Processors 4.8.
+                           Location: dependency of nxpvee-mimxrt595-evk-round-configuration/module.ivy
+                           Origin: MicroEJ
+                           Url: https://repository.microej.com/architectures/com/microej/architecture/CM4/CM4hardfp_GCC48/flopi4G25/7.17.0/

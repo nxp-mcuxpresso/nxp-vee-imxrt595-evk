@@ -1,0 +1,71 @@
+<!--
+	ANT
+
+	Copyright 2020-2021 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-validation" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		This script checks the publication.
+	-->
+	
+	<!-- Global properties -->
+	<dirname file="${ant.file.module-validation}" property="module-validation.dir"/>
+	
+	<!-- Requires -->
+	<import file="${module-validation.dir}/module-publish.ant"/>
+	<import file="${module-validation.dir}/module-bsp.ant"/>
+
+	<!-- Ensure BSP can be built before publication -->
+    <target name="module-validation:bsp:init" extensionOf="abstract-compile:compile-ready" if="bsp.root.dir" unless="${skip.publish}">
+    	
+    	<property name="com.microej.platformbuilder.bsp.build.enabled" value="false" description="test of build of BSP before publication is disabled by default."/>
+    	
+    	<fail message=".${line.separator}
+			The build of BSP before the publication is asked but it misses some properties.${line.separator}
+			The properties 'root.dir' and 'microejscript.relative.dir' must be set in 'bsp/bsp.properties'.${line.separator}
+			Or disable build of BSP removing the module property 'com.microej.platformbuilder.bsp.build.enabled' in 'module.ivy'.
+			">
+			<condition>
+				<and>
+					<istrue value="${com.microej.platformbuilder.bsp.build.enabled}"/>
+					<or>
+						<not><isset property="bsp.root.dir"/></not>
+						<not><isset property="bsp.microejscript.relative.dir"/></not>
+					</or>
+				</and>
+			</condition>
+		</fail>
+    </target>
+	
+	<!-- Check the BSP zipped in platform building it -->
+	<target name="module-validation:bsp" extensionOf="package" depends="module-publish:platform" if="${com.microej.platformbuilder.bsp.build.enabled}" unless="${skip.publish}">
+		
+		<property name="bsp.microejscript.name" value="build"/>
+		<condition property="bsp.microejscript.extension" value="bat" else="sh">
+			<os family="windows"/>
+		</condition>
+		
+		<!-- build BSP in tmp folder; do not need to unzip platform artifact -->
+		<property name="bsp.microejscript.path" location="${platform.publish.dir}/${platform.project.name}/source/bsp/${bsp.microejscript.relative.dir}/${bsp.microejscript.name}.${bsp.microejscript.extension}"/>
+		<fail message="The BSP project build script file is undefined (${bsp.microejscript.path})">
+			<condition>
+				<not>
+					<resourceexists>
+					 	<file file="${bsp.microejscript.path}"/>
+					</resourceexists>
+			   	</not>
+			</condition>
+		</fail>
+		<echo message="Execution of script '${bsp.microejscript.path}' started..."/>
+		<exec dir="${project.dir}" executable="${bsp.microejscript.path}" failonerror="true" osfamily="windows" />
+        <!-- OS family `unix` matches on both Linux and MacOS. -->
+        <exec dir="${project.dir}" executable="/bin/bash" failonerror="true" osfamily="unix">
+          <arg value="${bsp.microejscript.path}" />
+        </exec>
+		<echo message="Execution of script '${bsp.microejscript.path}' done."/>
+	</target>
+	
+</project>

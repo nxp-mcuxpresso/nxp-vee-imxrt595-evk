@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	ANT
+	
+	Copyright 2015-2021 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+
+<project name="deployInBSP" default="deployInBSP:copy:custom">
+	
+	<dirname file="${ant.file.deployInBSP}" property="scripts.dir"/>
+	<property name="deploy.bsp.microejapp.filename" value="microejapp.o" description="same name than augmentCProject"/>
+    <property name="deploy.bsp.microejapp.asm.filename" value="microejapp.s"/>
+	
+	<import file="${scripts.dir}/deployInBSPCommon.xml"/>
+	
+	<extension-point name="deployInBSP:copy:custom" depends="deployInBSP:copy:init"/>
+	
+	<!--
+		Copy application, microej libs and microej header files in the MicroEJ application
+		output folder.
+	-->
+	<target name="deployInBSP:copy:default">
+		<property name="deploy.platform.app.output.dir" location="${application.output.dir}/platform"/>
+		<mkdir dir="${deploy.platform.app.output.dir}"/>
+		
+		<!-- copy platform files -->
+		<copy todir="${deploy.platform.app.output.dir}" overwrite="true">
+			<fileset dir="${jpf.dir}" includes="lib/**/*"/>
+		</copy>
+		<copy todir="${deploy.platform.app.output.dir}/inc" overwrite="true">
+			<fileset dir="${jpf.dir}/include" includes="**/*"/>
+		</copy>
+		
+		<!-- copy application SOAR.o  -->
+		<property name="deploy.microejapp.file" location="${deploy.platform.app.output.dir}/lib/${deploy.bsp.microejapp.filename}"/>
+		<copy file="${deploy.binary.file}" tofile="${deploy.microejapp.file}" overwrite="true"/>
+
+        <!-- Copy SOAR.s if it exists -->
+		<dirname file="${deploy.binary.file}" property="deploy.binary.file.dir"/>
+		<basename file="${deploy.binary.file}" property="deploy.binary.file.noextension" suffix="o"/>
+		<property name="deploy.asm.file" location="${deploy.binary.file.dir}/${deploy.binary.file.noextension}.s" />
+		<property name="deploy.microejapp.asm.file" location="${deploy.platform.app.output.dir}/lib/${deploy.bsp.microejapp.asm.filename}"/>
+
+		<copy file="${deploy.asm.file}" tofile="${deploy.microejapp.asm.file}" overwrite="true" failonerror="false" quiet="true" />
+		<echo message="MicroEJ files for the 3rd-party BSP project are generated to '${deploy.platform.app.output.dir}'."/>
+	</target>
+	
+	<!--
+		Set default options which should be already set by MicroEJ launcher via the workbench extension.
+	-->
+	<target name="deployInBSP:workbenchExtension">
+		
+		<!-- default options: use folders specified by ${deploy.dir.xxx} -->
+		<property name="deploy.bsp.microejapp" value="false"/>
+		<property name="deploy.bsp.microejlib" value="false"/>
+		<property name="deploy.bsp.microejinc" value="false"/>
+		<property name="deploy.bsp.microejscript" value="false"/>
+		
+		<!-- default options: no folder specified: do not copy files -->
+		<property name="deploy.dir.microejapp" value=""/>
+		<property name="deploy.dir.microejlib" value=""/>
+		<property name="deploy.dir.microejinc" value=""/>
+		<property name="deploy.dir.microejscript" value=""/>
+		
+	</target>
+	
+	<target name="deployInBSP:copy:init" depends="deployInBSP:workbenchExtension, deployInBSP:copy:default">
+		
+		<!-- 
+			Load properties injected during platform build.
+			Available properties:
+				- ${deploy.bsp.available} == true: allows to copy in folder known by BSP
+				- ${deploy.bsp.javaapp.location} == a file: see ${deploy.bsp.microejapp.location}
+				- ${deploy.bsp.output.dir} == a folder: copy in specified folder
+		-->
+		<property file="${scripts.dir}/deployInBSP.properties"/>
+			
+		<!--
+			Kept for backward compatibility for RI made for XPF [7.0.0 - 7.12.0[. 
+			Used when platform configuration project is set in platform configuration bsp/bsp.properties
+			(and augmentCProject scripts have been used)
+			
+			However add the possibility to copy microej platforms files at launch time (contrary to old
+			scripts).
+		-->
+		<condition property="deploy.bsp.microejapp.location" value="${deploy.bsp.javaapp.location}">
+			<and>
+				<istrue value="${deploy.bsp.available}"/> <!-- platform build: copy in bsp allowed -->
+				<istrue value="${deploy.bsp.microejapp}"/> <!-- launch: use bsp output folder -->
+				<isset property="deploy.bsp.javaapp.location"/> <!-- augmentCProject property -->
+			</and>
+		</condition>
+
+		<!-- retrieve output folders for each type --> 
+		<deploy.getOutputDir type="app" dir="lib"/>
+		<deploy.getOutputDir type="lib"/>
+		<deploy.getOutputDir type="inc"/>
+		<deploy.getOutputDir type="script"/>
+		
+	</target>
+	
+	<!--
+		Copy application file at location set during platform build and known by BSP.
+		(augmentCProject use case)
+	-->
+	<target name="deployInBSP:copy:app:file" extensionOf="deployInBSP:copy:custom" if="deploy.bsp.microejapp.location">
+		
+		<copy file="${deploy.microejapp.file}" tofile="${deploy.bsp.microejapp.location}" overwrite="true"/>
+
+        <!-- Copy ASM file if it exists -->
+        <!-- 1. Get source ASM file location. -->
+		<dirname file="${deploy.microejapp.file}" property="deploy.microejapp.file.dir"/>
+		<basename file="${deploy.microejapp.file}" property="deploy.microejapp.file.noextension" suffix="o"/>
+		<property name="deploy.asm.file" location="${deploy.microejapp.file.dir}/${deploy.microejapp.file.noextension}.s" />
+
+        <!-- 2. Get destination dir -->
+        <dirname file="${deploy.bsp.microejapp.location}" property="deploy.bsp.microejapp.location.dir" />
+		<property name="deploy.bsp.microejapp.asm.file" location="${deploy.bsp.microejapp.location.dir}/${deploy.bsp.microejapp.asm.filename}"/>
+
+        <!-- 3. Copy ASM file if it exists to destination dir -->
+		<copy file="${deploy.asm.file}" tofile="${deploy.bsp.microejapp.asm.file}" overwrite="true" failonerror="false" quiet="true" />
+		
+		<deploy.printReport 
+			message="The MicroEJ application file has been copied here"
+			location="${deploy.bsp.microejapp.location}"
+		/>
+		
+	</target>
+
+	<!--
+		Copy application file at location set during platform or application build.
+	-->
+	<target name="deployInBSP:copy:app:dir" extensionOf="deployInBSP:copy:custom" if="deploy.bsp.microejapp.dir">
+		
+		<copy file="${deploy.microejapp.file}" todir="${deploy.bsp.microejapp.dir}" overwrite="true"/>
+
+        <!-- Copy ASM file if it exists -->
+        <!-- 1. Get source ASM file location. -->
+		<dirname file="${deploy.microejapp.file}" property="deploy.microejapp.file.dir"/>
+		<basename file="${deploy.microejapp.file}" property="deploy.microejapp.file.noextension" suffix="o"/>
+		<property name="deploy.asm.file" location="${deploy.microejapp.file.dir}/${deploy.microejapp.file.noextension}.s" />
+
+        <!-- 2. Set destination dir -->
+		<property name="deploy.bsp.microejapp.asm.file" location="${deploy.bsp.microejapp.dir}/${deploy.bsp.microejapp.asm.filename}"/>
+
+        <!-- 3. Copy ASM file if it exists to destination dir -->
+		<copy file="${deploy.asm.file}" tofile="${deploy.bsp.microejapp.asm.file}" overwrite="true" failonerror="false" quiet="true" />
+		
+		<deploy.printReport 
+			message="The MicroEJ application (microejapp.o) has been deployed to"
+			location="${deploy.bsp.microejapp.dir}"
+		/>
+	</target>
+
+	<!--
+		Copy platform library file(s) at location set during platform or application build.
+	-->
+	<target name="deployInBSP:copy:lib:dir" extensionOf="deployInBSP:copy:custom" if="deploy.bsp.microejlib.dir">
+		
+		<fileset dir="${jpf.dir}/lib" includes="**/*" id="deploy.libraries.list"/>
+		
+		<copy todir="${deploy.bsp.microejlib.dir}" overwrite="true">
+			<fileset refid="deploy.libraries.list"/>
+		</copy>
+		
+		<condition property="deploy.libraries.message" value="files have" else="(microejruntime.a) has">
+			<resourcecount refid="deploy.libraries.list" when="greater" count="1" />
+		</condition>
+		<deploy.printReport 
+			message="The MicroEJ platform library ${deploy.libraries.message} been deployed to"
+			location="${deploy.bsp.microejlib.dir}"
+		/>
+		
+	</target>
+	
+	<!--
+		Copy platform header files at location set during platform or application build.
+	-->
+	<target name="deployInBSP:copy:inc:dir" extensionOf="deployInBSP:copy:custom" if="deploy.bsp.microejinc.dir">
+		<!-- 
+			Copy only header files to BSP that are not present and those which content is not the same
+			(avoid to trigger useless compilation steps) 
+		-->
+		<copy todir="${deploy.bsp.microejinc.dir}" overwrite="true">
+			<fileset dir="${jpf.dir}/include" includes="**/*">
+			    <different targetdir="${deploy.bsp.microejinc.dir}"
+			        ignoreFileTimes="true"/>
+			</fileset>
+		</copy>
+				
+		<deploy.printReport 
+			message="The MicroEJ platform header files (*.h) have been deployed to"
+			location="${deploy.bsp.microejinc.dir}"
+		/>
+		
+	</target>
+	
+	<target name="deployInBSP:exec:script:dir" extensionOf="deployInBSP:copy:custom" depends="deployInBSP:copy:app:dir,deployInBSP:copy:lib:dir,deployInBSP:copy:inc:dir" if="deploy.bsp.microejscript.dir">
+		<property name="deploy.bsp.microejscript.name" value="build"/>
+		<condition property="deploy.bsp.microejscript.extension" value="bat" else="sh">
+			<os family="windows"/>
+		</condition>
+		<property name="deploy.bsp.microejscript.filename" location="${deploy.bsp.microejscript.dir}/${deploy.bsp.microejscript.name}.${deploy.bsp.microejscript.extension}"/>
+		<fail message="The BSP project build script file is undefined (${deploy.bsp.microejscript.filename})">
+			<condition>
+				<not>
+					<resourceexists>
+					 	<file file="${deploy.bsp.microejscript.filename}"/>
+					</resourceexists>
+			   	</not>
+			</condition>
+		</fail>
+		<echo message="Execution of script '${deploy.bsp.microejscript.filename}' started..."/>
+
+		<exec dir="${application.output.dir}" executable="${deploy.bsp.microejscript.filename}" failonerror="true" osfamily="windows" />
+        <!-- OS family `unix` matches on both Linux and MacOS. -->
+        <exec dir="${application.output.dir}" executable="/bin/bash" failonerror="true" osfamily="unix">
+          <arg value="${deploy.bsp.microejscript.filename}" />
+        </exec>
+
+		<echo message="Execution of script '${deploy.bsp.microejscript.filename}' done."/>
+	</target>			
+
+	<macrodef name="deploy.printReport">
+		<attribute name="message"/>
+		<attribute name="location"/>
+		<sequential>
+			<!-- forces an OS path and print a report -->
+			<local name="deploy.location.tmp"/>
+			<property name="deploy.location.tmp" location="@{location}"/>
+			<echo message="@{message}: '${deploy.location.tmp}'."/>
+		</sequential>
+	</macrodef>
+	
+</project>

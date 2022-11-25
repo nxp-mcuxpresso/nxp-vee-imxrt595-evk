@@ -1,0 +1,36 @@
+<!--
+	ANT
+
+	Copyright 2020-2021 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-files" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		This script prepares the publication of readme, changelog, release notes and license
+	-->
+
+    <!-- Set license directory for ea plugins -->
+    <property name="license.dir" value="${project.parent.dir}" />
+
+    <!-- Configure additional resources README, CHANGELOG and RELEASE_NOTES -->
+	<property name="additional.readme.dir" value="${project.parent.dir}" />
+	<property name="additional.readme.ext" value="rst" />
+    <property name="additional.readme.name" value="README" />
+    <property name="additional.readme.file" location="${additional.readme.dir}/${additional.readme.name}.${additional.readme.ext}" />
+    <available file="${additional.readme.file}" property="has.additional.readme.file" />
+
+	<property name="additional.changelog.dir" value="${project.parent.dir}" />
+	<property name="additional.changelog.ext" value="rst" />
+    <property name="additional.changelog.name" value="CHANGELOG" />
+    <property name="additional.changelog.file" location="${additional.changelog.dir}/${additional.changelog.name}.${additional.changelog.ext}" />
+    <available file="${additional.changelog.file}" property="has.additional.changelog.file" />
+	
+	<property name="additional.releasenotes.dir" value="${project.parent.dir}" />
+	<property name="additional.releasenotes.ext" value="rst" />
+	<property name="additional.releasenotes.name" value="RELEASE_NOTES"/>
+	<property name="additional.releasenotes.file" location="${additional.releasenotes.dir}/${additional.releasenotes.name}.${additional.releasenotes.ext}"/>
+	<available file="${additional.releasenotes.file}" property="has.additional.releasenotes.file" />
+		
+</project>

@@ -1,0 +1,4 @@
+target~/
+bin/
+src-adpgenerated/
+com.microej.core.tests.*/

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--
+	ANT
+
+	Copyright 2013-2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="MicroEJFramework" default="platform">
+	
+	<!--
+		This file is identical to the internal MicroEJ Workbench file. It just removes the call to the
+		targets "platform/export" and "platform/cleanproject" in order to keep the platform in workspace.
+		WARNING: The file name must be "MicroEJFramework.xml" (known by MicroEJ Workbench)
+		
+		original script file:
+			<target name="platform" depends="platform/project, platform/export, platform/cleanproject"/>
+			
+		this script file:
+			<target name="platform" depends="platform/project"/>
+	-->
+	
+	<dirname file="${ant.file.MicroEJFramework}" property="ant.dir.MicroEJFramework"/>
+	<import file="${ant.dir.MicroEJFramework}/MicroEJEnvironment.xml"/>
+	<import file="${ant.dir.MicroEJFramework}/MicroEJArchitecture.xml"/>
+	<import file="${ant.dir.MicroEJFramework}/MicroEJAPI.xml"/>
+	
+	<!-- import platform specific scripts and properties -->
+	<import file="${xpf.dir}/build/scripts/configuration.xml" optional="true" />
+	<import file="${platform.base.dir}/configuration.xml" optional="true" />
+	<import file="${platform.base.dir}/build.xml" optional="true" /><!-- backward compatibility -->
+	<import optional="true">
+		<fileset dir="${scripts.dir}" includes="group*.xml" />
+		<path location="DUMMY" /> <!-- ensure the nested resources set is ot empty -->
+	</import>
+	
+	<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+	
+	<presetdef name="fragmentfileset">
+		<fileset>
+			<exclude name="clean.xml" />
+			<exclude name="copy.xml" />
+			<exclude name="readme.txt" />
+		</fileset>
+	</presetdef>
+	
+	<property file="${ant.dir.MicroEJFramework}/xpf.properties" />
+	<property file="${ant.dir.MicroEJFramework}/jpf.properties" />
+	
+	<target name="platform" depends="platform/project"/>
+	<target name="platform/project" depends="platform/creation, platform/initialization, platform/installation, platform/customization, platform/dropins, platform/finalization, platform/refresh" />
+	
+	<target name="platform/creation">
+		<dirname property="workspace" file="${platform.base.dir}" />
+    	<microej.newJavaPlatform workspace="${workspace}" projectName="${platform.project.name}" hardwarePartNumber="${platform.hardwarePartNumber}" name="${platform.name}" version="${platform.version}" provider="${platform.provider}" vendorUrl="${platform.vendorUrl}" workbenchMinVersion="${platform.workbenchMinVersion}" overwrite="true">
+			<xpf refid="myXPF"/>
+		</microej.newJavaPlatform>
+		<!-- hardcode 'jpf.dir' in case an equivalent platform (same attributes) already exists in the repository or workspace (see WI 11541) -->		
+		<property name="jpf.dir" location="${workspace}/${platform.project.name}/source" />
+		<property name="jpf.path" location="${jpf.dir}" /> <!-- TODO deprecated to remove (see GetPropertiesTaskIntern) -->
+		<!--Declare JPF-->
+		<microej.jpf id="myJPF" architecture="${xpf.architecture}" baseline="${xpf.baseline}" hardwarePartNumber="${platform.hardwarePartNumber}" level="${xpf.level}" licenseTag="${xpf.licenseTag}" name="${platform.name}" provider="${platform.provider}" techVersion="${xpf.techVersion}" version="${platform.version}" toolchain="${xpf.toolchain}" />
+		<microej.getProperties prefix="jpf">
+			<platform refid="myJPF" />
+		</microej.getProperties>
+	</target>
+	
+	<target name="platform/dropins">
+		<copy todir="${jpf.path}/" overwrite="true">
+			<fileset dir="${platform.base.dir}/dropins" errorOnMissingDir="false" />
+		</copy>
+	</target>
+	
+	<target name="platform/refresh">
+		<eclipse.refreshLocal resource="${platform.project.name}" />
+	</target>
+	
+	<target name="platform/export" depends="platform/creation">
+		<fail unless="platform.printablename" />
+		<fail unless="platform.archivepattern" />
+		<microej.exportJavaPlatform exportjpf="true" projectname="${platform.project.name}" overwrite="true" outputdir="${platform.output.dir}"	jpfprintablename="${platform.printablename}" jpfarchivepattern="${platform.archivepattern}" />
+	</target>
+
+	<target name="platform/cleanproject" extensionOf="platform/clean" depends="platform/creation">
+		<microej.deleteResource resource="${platform.project.name}" />
+	</target>
+
+</project>

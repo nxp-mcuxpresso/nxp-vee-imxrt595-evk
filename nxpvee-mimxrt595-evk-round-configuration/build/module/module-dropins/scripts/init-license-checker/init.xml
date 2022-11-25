@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Java
+	
+	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+-->
+<project name="license-checker-init">
+
+	<import file="${scripts.dir}/extension-init.xml" />
+	<property name="tools.dir" location="${platform.dir}/tools"/>
+	<property name="licenseManager.dir" location="${platform.dir}/licenseManager"/>
+
+	<target name="init/license-checker" extensionOf="init/workbench" if="onBoard">
+		<path id="license-checker.classpath.id">
+			<path location="${tools.dir}/license-checker.jar"/>
+			<fileset dir="${licenseManager.dir}" includes="licenseManager*.jar"/>
+		</path>
+		
+		<taskdef name="InitLicensesWorkingDir" classname="com.microej.tool.InitLicensesWorkingDir" classpathref="license-checker.classpath.id"/>
+		<InitLicensesWorkingDir workingDirectory="${microej.io.tmpdir}"/>
+		
+		<java failonerror="true" fork="true" classpathref="license-checker.classpath.id" classname="com.microej.tool.LicenceChecker">
+			<sysproperty key="licenses.working.dir" value="${licenses.working.dir}"/>
+			<sysproperty key="java.library.path" value="${java.library.path}"/>
+		</java>
+	</target>
+
+</project>

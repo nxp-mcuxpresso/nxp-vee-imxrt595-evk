@@ -1,0 +1,55 @@
+<!--
+	ANT
+
+	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-frontpanel" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		This script ensures to populate front panel v6 dependencies before launching platform
+		build.
+	-->
+
+	<!-- Check if front panel project is in version 6.x -->
+	<target name="module-frontpanel:version:check">
+		<property file="${project.dir}/frontpanel/frontpanel.properties" prefix="fp"/>
+		<property name="fp.project.dir" location="${project.parent.dir}/${fp.project.name}"/>
+
+		<!-- check if project is fp v6 project -->
+		<property name="fp.project.file" location="${fp.project.dir}/.project"/>
+		<property name="fp.project.ivy.file" location="${fp.project.dir}/module.ivy"/>
+		<condition property="fp.project.isV6">
+			<and>
+				<available file="${fp.project.dir}" type="dir"/>
+				<available file="${fp.project.file}" type="file"/>
+				<available file="${fp.project.ivy.file}" type="file"/>
+				<resourcecontains resource="${fp.project.file}" substring="&lt;nature&gt;ej.fp.v6.projectnature&lt;/nature&gt;"/>
+			</and>
+		</condition>
+	</target>
+
+	<!-- Resolve dependencies of front panel project -->
+	<target name="module-frontpanel:resolve" depends="module-frontpanel:version:check" extensionOf="abstract-compile:compile-ready" if="fp.project.isV6">
+
+		<!-- delete potential dependencies -->
+		<delete dir="${fp.project.dir}/lib"/>
+
+		<!--
+			Resolve frontpanel project dependencies in a separate Ivy context.
+			Use the project ivysettings since front panel artifacts are deployed in the central repository, not in the build types repository.
+		-->
+		<ivy:settings file="${project.ivy.settings.file}" id="fp.ivysettings"/>
+		<ivy:resolve
+			file="${fp.project.dir}/module.ivy"
+			conf="default,provided"
+			settingsref="fp.ivysettings"
+		/>
+		<ivy:retrieve
+			pattern="${fp.project.dir}/lib/[type]s/[artifact](-[classifier])-[revision].[ext]"
+			settingsref="fp.ivysettings"
+		/>
+	</target>
+
+</project>

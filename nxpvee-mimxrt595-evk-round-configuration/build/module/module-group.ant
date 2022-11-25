@@ -1,0 +1,67 @@
+<!--
+	ANT
+
+	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-group" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!--
+		This script adds or removes some groups from platform configuration file.
+		
+		Set the property "com.microej.module.{group name}.enabled" to "true" or "false" to add or remove
+		a group. Do not set this property to let platform file option as is.
+	-->
+
+	<!-- Global properties -->
+	<dirname file="${ant.file.module-group}" property="module-group.dir"/>
+	
+	<!-- Enable or disable group "multi" -->
+	<target name="module-group:multi" extensionOf="abstract-compile:compile-ready" if="com.microej.platformbuilder.module.multi.enabled">
+		<module-group-update name="kf" enable="${com.microej.platformbuilder.module.multi.enabled}"/>
+	</target>
+	
+	<!-- Update '.platform' file to add or remove a group-->
+	<macrodef name="module-group-update">
+		<attribute name="name"/>
+		<attribute name="enable" default="${com.microej.platformbuilder.module.@{name}.enabled}" description="true | false"/>
+		<attribute name="platform.filename" default="${com.microej.platformbuilder.platform.filename}"/>
+		<sequential>
+			<echo message="module-group-update[@{operation}@{name}]"/>
+			
+			<local name="operation.file"/>
+			<condition property="operation.file" value="${module-group.dir}/module-group/addGroup.xsl" else="${module-group.dir}/module-group/removeGroup.xsl">
+				<istrue value="@{enable}"/>
+			</condition>
+			
+			<!-- process XSL and generate ouput project  -->
+			<!-- XSLT MUST NOT process the same file in input and output => perform a copy -->
+			<local name="operation.file.tmp"/>
+			<tempfile property="operation.file.tmp" destdir="${java.io.tmpdir}"/>
+			<copy file="${operation.file}" tofile="${operation.file.tmp}">
+				<filterset begintoken="%" endtoken="%">
+					<filter token="GROUP_NAME" value="@{name}"/>
+				</filterset>
+			</copy>
+			<local name="platform.filename.tmp"/>
+			<tempfile property="platform.filename.tmp" destdir="${java.io.tmpdir}"/>
+			<copy file="@{platform.filename}" tofile="${platform.filename.tmp}"/>
+			<xslt 
+				style="${operation.file.tmp}"
+			    in="${platform.filename.tmp}"
+				out="@{platform.filename}"
+				force="true"
+			/>
+			<echo message="module-group-update[@{name}]"/>
+			<concat>
+				<fileset file="@{platform.filename}"/>
+			</concat>
+
+			<delete file="${operation.file.tmp}"/>
+			<delete file="${platform.filename.tmp}"/>
+		</sequential>
+	</macrodef>
+	
+	
+</project>

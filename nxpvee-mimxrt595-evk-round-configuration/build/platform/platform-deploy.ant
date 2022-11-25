@@ -1,0 +1,63 @@
+<!--
+	ANT
+
+	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="platform-deploy">
+
+	<!-- 
+		Update workbench extension and generate 'deployInBSP.properties' according to 'bsp/bsp.properties' configuration.
+		Overrides the default architecture script, after the dropins are copied in order to get the compatible 'workbenchExtension_launchScriptFramework.jar'
+	-->
+	
+	<extension-point name="platform-deploy:deployInBSP" depends="platform-deploy:deployInBSP:init"/>
+	
+	<target name="platform-deploy:workbenchExtension:augment" extensionOf="platform/finalization" depends="platform-deploy:deployInBSP">
+		<jar destfile="${jpf.dir}/workbenchExtension_launchScriptFramework.jar" update="true">
+			<fileset file="${deploy.bsp.properties.file.location}"/>
+		</jar>
+	</target>
+	
+	<target name="platform-deploy:deployInBSP:init">
+		<!-- When using these platform additions scripts, override and remove legacy 'deploy.bsp.output.dir' generation-->
+		<property name="deploy.bsp.properties.file.location" location="${jpf.dir}/scripts/deployInBSP.properties"/>	
+		<propertyfile file="${deploy.bsp.properties.file.location}">
+			<entry key="deploy.bsp.output.dir" operation="del"/>
+			<entry key="deploy.bsp.available" value="true"/>
+		</propertyfile>		
+	</target>
+	
+	<target name="platform-deploy:deployInBSP:app" extensionOf="platform-deploy:deployInBSP" if="bsp.microejapp.relative.dir">
+		<propertyfile file="${deploy.bsp.properties.file.location}">
+			<entry key="deploy.bsp.microejapp.relative.dir" value="${bsp.microejapp.relative.dir}"/>
+		</propertyfile>		
+	</target>
+	
+	<target name="platform-deploy:deployInBSP:lib" extensionOf="platform-deploy:deployInBSP" if="bsp.microejlib.relative.dir">
+		<propertyfile file="${deploy.bsp.properties.file.location}">
+			<entry key="deploy.bsp.microejlib.relative.dir" value="${bsp.microejlib.relative.dir}"/>
+		</propertyfile>		
+	</target>
+	
+	<target name="platform-deploy:deployInBSP:inc" extensionOf="platform-deploy:deployInBSP" if="bsp.microejinc.relative.dir">
+		<propertyfile file="${deploy.bsp.properties.file.location}">
+			<entry key="deploy.bsp.microejinc.relative.dir" value="${bsp.microejinc.relative.dir}"/>
+		</propertyfile>		
+	</target>
+	
+	<target name="platform-deploy:deployInBSP:script" extensionOf="platform-deploy:deployInBSP" if="bsp.microejscript.relative.dir">
+		<propertyfile file="${deploy.bsp.properties.file.location}">
+			<entry key="deploy.bsp.microejscript.relative.dir" value="${bsp.microejscript.relative.dir}"/>
+		</propertyfile>		
+	</target>
+	
+	<target name="platform-deploy:deployInBSP:root" extensionOf="platform-deploy:deployInBSP" if="bsp.root.dir">
+		<propertyfile file="${deploy.bsp.properties.file.location}">
+			<!-- Set the absolute path for local usage when the Platform does not yet include the BSP in its sub-folder -->
+			<entry key="deploy.bsp.local.root.dir" value="${bsp.root.dir}"/>
+		</propertyfile>		
+	</target>
+	
+</project>
