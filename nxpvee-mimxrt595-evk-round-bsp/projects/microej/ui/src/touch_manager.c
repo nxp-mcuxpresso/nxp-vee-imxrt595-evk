@@ -3,6 +3,9 @@
  *
  * Copyright 2019-2020 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
+ *
+ * Copyright 2023 NXP
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 // -----------------------------------------------------------------------------
@@ -165,7 +168,7 @@ static void __touch_manager_task(void *pvParameters)
 	while (1)
 	{
 		/* Suspend ourselves */
-		xSemaphoreTake(touch_interrupt_sem, portMAX_DELAY);
+		(void)xSemaphoreTake(touch_interrupt_sem, portMAX_DELAY);
 
 		/* We have been woken up, lets work ! */
 		__touch_manager_read();

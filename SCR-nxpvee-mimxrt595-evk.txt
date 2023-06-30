@@ -1,6 +1,6 @@
 Release Name: NXPVEE-MIMXRT595-EVK
-Release Version: 1.0.0
-Package License: EULA_EVAL.txt v13 April 2019
+Release Version: 1.1.0
+Package License: EULA_EVAL.txt v21 December 2022
 
 SDK_Peripheral_Driver      Name: SDK Peripheral Driver
                            Version: 2.x.x
@@ -10,7 +10,7 @@ SDK_Peripheral_Driver      Name: SDK Peripheral Driver
                            Description: Peripheral drivers are designed for
                            the most common use cases identified for the
                            underlying hardware block.
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/devices/<device>/drivers
+                           Location: ../mcux-sdk/core/devices/<device>/drivers
                            Origin: NXP (BSD-3-Clause)
 
 SDK_Examples               Name: SDK examples
@@ -22,7 +22,7 @@ SDK_Examples               Name: SDK examples
                            Description: SDK out of box examples to show how
                            to use peripheral drivers and integrate
                            middleware.
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/boards/<board>/
+                           Location: ../mcux-sdk/core/boards/<board>
                            Origin: NXP (BSD-3-Clause)
 
 SDK_Device                 Name: SDK SoC files
@@ -32,92 +32,78 @@ SDK_Device                 Name: SDK SoC files
                            Format: source code, linker files
                            Description: Device system files, template files,
                            IDE related startup and linker files.
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/devices/<device>/
+                           Location: ../mcux-sdk/core/devices/<device>
                            Origin: NXP (BSD-3-Clause)
 
 cmsis                      Name: CMSIS
                            Version: 5.8.0
                            Outgoing License: Apache License 2.0
-                           License File:
-                           nxpvee-mimxrt595-evk-round-bsp/sdk/CMSIS/LICENSE.txt
+                           License File: ../mcux-sdk/core/CMSIS/LICENSE.txt
                            Format: source code
                            Description: Vendor-independent hardware
                            abstraction layer for microcontrollers that are
                            based on Arm Cortex processors, distributed by
                            ARM. cores
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/CMSIS/
+                           Location: ../mcux-sdk/core/CMSIS
                            Origin: ARM (Apache-2.0) -
                            https://github.com/ARM-software/CMSIS_5/releases/t
                            ag/5.8.0
 
-SDK_Components             Name: SDK components and board peripheral drivers
-                           Version: NA
-                           Outgoing License: BSD-3-Clause
-                           License File: Licenses/COPYING-BSD-3
-                           Format: source code
-                           Description: SDK components and board peripheral
-                           drivers, for example, flash and codec drivers.
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/components/
-                           Origin: NXP (BSD-3-Clause), ITE (BSD-3-Clause)
-
 freertos_kernel            Name: FreeRTOS
                            Version: 10.4.3_rev1
                            Outgoing License: MIT
-                           License File:
-                           nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos/freertos_kernel/LICENSE.md
+                           License File: ../mcux-sdk/rtos/freertos/freertos-kernel/LICENSE.md
                            Format: source code
                            Description: Open source RTOS kernel for small
                            devices
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos/freertos_kernel
+                           Location: ../mcux-sdk/rtos/freertos/freertos-kernel
+                                     nxpvee-mimxrt595-evk-round-bsp/sdk_overlay/rtos/freertos/freertos_kernel
                            Origin: Amazon (MIT)
                            Url: https://aws.amazon.com/freertos/
 
 freertos_kernel            Name: FreeRTOS
                            Version: 10.2.1
                            Outgoing License: MIT
-                           License File:
-                           nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos/freertos_kernel/LICENSE.md
+                           License File: ../mcux-sdk/rtos/freertos/freertos-kernel/LICENSE.md
                            Format: source code
                            Description: Open source RTOS kernel for small
                            devices
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/amazon-freertos/freertos_kernel
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk_overlay/rtos/amazon-freertos/freertos_kernel
                            Origin: Amazon (MIT)
                            Url: https://aws.amazon.com/freertos/
 
 aws_iot                    Name: AWS IoT
                            Version: 202107.0.0_rev1
                            Outgoing License: MIT
-                           License File:
-                           nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos/LICENSE
+                           License File: ../mcux-sdk/rtos/freertos/freertos-kernel/LICENSE.md
                            Format: source code
                            Description: IoT operating system for
                            microcontrollers
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/rtos/freertos
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk_overlay/rtos/freertos
                            Origin: Amazon (MIT)
                            Url: https://aws.amazon.com/freertos/
 
 cmsis_drivers              Name: SDK CMSIS Peripheral Drivers
                            Version: 2.x.x
                            Outgoing License: Apache License 2.0
-                           License File:
-                           nxpvee-mimxrt595-evk-round-bsp/sdk/CMSIS/LICENSE.txt
+                           License File: ../mcux-sdk/core/CMSIS/LICENSE.txt
                            Format: source code
                            Description: CMSIS Peripheral drivers are designed
                            to provide hardware independent APIs which make
                            application reusable across a wide range of
                            supported microcontroller devices.
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/devices/<device>/cmsis_drivers
+                           Location: ../mcux-sdk/core/cmsis_drivers
                            Origin: NXP (Apache License 2.0)
 
 vglite                     Name: vglite
                            Version: 3.0.15_rev4
                            Outgoing License: MIT
                            License File:
-                           nxpvee-mimxrt595-evk-round-bsp/sdk/middleware/vglite/LICENSE.txt
+                           nxpvee-mimxrt595-evk-round-bsp/sdk_overlay/middleware/vglite/LICENSE.txt
                            Format: source code
                            Description: VeriSilicon's platform independent
                            VGLite Graphics library
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/middleware/vglite
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk_overlay/middleware/vglite
                            Origin: VeriSilicon (http://www.verisilicon.com/)
                            Url: http://www.verisilicon.com/
 
@@ -125,11 +111,11 @@ mcufont                    Name: mcufont
                            Version: 1.0
                            Outgoing License: MIT
                            License File:
-                           nxpvee-mimxrt595-evk-round-bsp/sdk/middleware/vglite/font/mcufont/LICENSE
+                           nxpvee-mimxrt595-evk-round-bsp/sdk_overlay/middleware/vglite/font/mcufont/LICENSE
                            Format: source code
                            Description: Font rendering library for
                            microcontrollers
-                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk/middleware/vglite/font/mcufont
+                           Location: nxpvee-mimxrt595-evk-round-bsp/sdk_overlay/middleware/vglite/font/mcufont
                            Origin: Petteri Aimonen
                            (https://github.com/PetteriAimonen)
                            Url: https://github.com/mcufont/mcufont
@@ -171,7 +157,7 @@ SystemView Target Sources  Name: SystemView Target Sources
 SimpleGFX                  Name: SimpleGFX
                            Version: 0.1
                            Outgoing License: BSD-3-Clause
-                           License File: nxpvee-mimxrt595-evk-round-apps/LICENSE
+                           License File: nxpvee-mimxrt595-evk-round-apps/LICENSE.txt
                            Format: source code
                            Description: example of a graphics VEE application
                            Location: nxpvee-mimxrt595-evk-round-apps/src/main/java/com/nxp/simpleGFX
@@ -180,7 +166,7 @@ SimpleGFX                  Name: SimpleGFX
 AnimatedMascot             Name: AnimatedMascot
                            Version: 0.1
                            Outgoing License: BSD-3-Clause
-                           License File: nxpvee-mimxrt595-evk-round-apps/LICENSE
+                           License File: nxpvee-mimxrt595-evk-round-apps/LICENSE.txt
                            Format: source code
                            Description: VEE application demonstrating vectorial animation
                            Location: nxpvee-mimxrt595-evk-round-apps/src/main/java/com/nxp/animatedMascot
@@ -192,7 +178,7 @@ MicroEJ BSP                Name: MicroEJ BSP
                            License File: Licenses/COPYING-BSD-3
                            Format: source code
                            Description: Board support package for i.MX RT595
-                           Location: nxpvee-mimxrt595-evk-round-bsp/project/microej (excluding subdirectory
+                           Location: nxpvee-mimxrt595-evk-round-bsp/projects/microej (excluding subdirectory
                            thirdparty)
                            Origin: MicroEJ (https://www.microej.com/)
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>MIMXRT595-evk_platform-CM4hardfp_GCC48-1.1.0</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.is2t.microej.pro.workbench.jpfBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.is2t.microej.pro.workbench.jpfNature</nature>
+	</natures>
+</projectDescription>

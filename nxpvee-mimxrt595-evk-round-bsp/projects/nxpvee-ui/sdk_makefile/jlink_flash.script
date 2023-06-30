@@ -1,0 +1,5 @@
+r
+loadbin ../armgcc/debug/mimxrt595_freertos-bsp.bin 0x08000000
+r
+g
+qc

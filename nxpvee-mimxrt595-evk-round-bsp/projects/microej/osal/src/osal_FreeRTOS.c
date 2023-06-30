@@ -3,6 +3,10 @@
  *
  * Copyright 2017-2021 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
+ *
+ * Copyright 2023 NXP
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
  */
 
 /**
@@ -445,7 +449,7 @@ OSAL_status_t OSAL_disable_context_switching(void)
  */
 OSAL_status_t OSAL_enable_context_switching(void)
 {
-	xTaskResumeAll();
+	(void)xTaskResumeAll();
 	return OSAL_OK;
 }
 

@@ -3,6 +3,9 @@
  *
  * Copyright 2020-2022 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
+ *
+ * Copyright 2023 NXP
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*
@@ -286,7 +289,8 @@ void DISPLAY_VGLITE_start_operation(bool wakeup_graphics_engine) {
 
 	if (!wakeup_graphics_engine) {
 		// active waiting until the GPU interrupt is thrown
-		xSemaphoreTake(vg_lite_operation_semaphore, portMAX_DELAY);
+
+		(void)xSemaphoreTake(vg_lite_operation_semaphore, portMAX_DELAY);
 	}
 }
 

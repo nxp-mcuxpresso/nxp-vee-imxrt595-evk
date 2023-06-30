@@ -3,16 +3,19 @@
     
 	Copyright 2022 MicroEJ Corp. All rights reserved.
         Use of this source code is governed by a BSD-style license that can be found with this software.
+	Copyright 2023 NXP
+	SPDXLicense-Identifier: BSD-3-Clause
 -->
-
-<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:ej="https://developer.microej.com" ej:version="2.0.0"> 
-    <info organisation="com.microej" module="mimxrt595_freertos-fp" status="integration" revision="0.4.3"></info>
+<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
+	<info organisation="com.nxp" module="FrontPanel" status="integration" revision="0.4.3">
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-std-javalib" revision="2.0.+"/>
+	</info>
 	
 	<configurations defaultconfmapping="default->default;provided->*">
 		<conf name="default" visibility="public" description="Runtime dependencies to other artifacts"/>
 		<conf name="provided" visibility="public" description="Compile-time dependencies to APIs provided by the platform"/>
 	</configurations>
-	
+
 	<dependencies>
 		<dependency org="ej.tool.frontpanel" name="widget" rev="2.0.0"/>
 		<dependency org="com.microej.pack.ui" name="ui-pack" rev="13.1.0">

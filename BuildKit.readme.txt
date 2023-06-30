@@ -1,0 +1,7 @@
+To populate the Build Kit:
+
+The Build Kit is bundled with the SDK and can be exported using the following steps: [2]
+
+    Select File > Export > MicroEJ > Module Manager Build Kit,
+    Choose an empty Target directory,
+    Click on the Finish button.

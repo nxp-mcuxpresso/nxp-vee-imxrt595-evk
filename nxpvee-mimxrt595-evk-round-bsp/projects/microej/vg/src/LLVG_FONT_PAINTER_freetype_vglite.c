@@ -3,6 +3,9 @@
  *
  * Copyright 2020-2022 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
+ *
+ * Copyright 2023 NXP
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /**
@@ -162,7 +165,7 @@ jint LLVG_FONT_PAINTER_IMPL_draw_string_gradient(MICROUI_GraphicsContext* gc, jc
 	else {
 		if (LLUI_DISPLAY_requestDrawing(gc, (SNI_callback)&(LLVG_FONT_PAINTER_IMPL_draw_string_gradient))){
 
-			vg_lite_linear_gradient_t gradient;
+			vg_lite_linear_gradient_t gradient = {0};
 			jfloat* local_gradient_matrix = MICROVG_HELPER_check_matrix(gradientMatrix);
 
 			vg_lite_matrix_t local_matrix;
@@ -216,7 +219,7 @@ jint LLVG_FONT_PAINTER_IMPL_draw_string_on_circle_gradient(MICROUI_GraphicsConte
 	else {
 		if (LLUI_DISPLAY_requestDrawing(gc, (SNI_callback)&(LLVG_FONT_PAINTER_IMPL_draw_string_on_circle_gradient))){
 
-			vg_lite_linear_gradient_t gradient;
+			vg_lite_linear_gradient_t gradient = {0};
 			jfloat* local_gradient_matrix = MICROVG_HELPER_check_matrix(gradientMatrix);
 
 			vg_lite_matrix_t local_matrix;

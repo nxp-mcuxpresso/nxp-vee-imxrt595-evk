@@ -32,6 +32,7 @@
 #include "fsl_gpio.h"
 #include "time_hardware_timer.h"
 
+#include "trace_platform.h"
 
 extern uint32_t SystemCoreClock; /* in Kinetis SDK, this contains the system core clock speed */
 
@@ -125,14 +126,18 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         RTC_SetWakeupCount(pxRtcBase, ulReloadValue);
 
         if (power_down_mode == PM_SLEEP) {
+            TRACE_HW_TASK_START(HW_TASK_SLEEP_ID);
             POWER_EnterSleep();
+            TRACE_HW_TASK_STOP(HW_TASK_SLEEP_ID);
         } else if (power_down_mode == PM_DEEP_SLEEP) {
-        	/* Enable GPIO WakeUp interrupt */
-        	GPIO_WakeUp_Enable();
-        	/* Enter DeepSleep */
-        	POWER_EnterDeepSleep(power_down_config);
-        	/* Disable GPIO WakeUp interrupt */
-        	GPIO_WakeUp_Disable();
+            /* Enable GPIO WakeUp interrupt */
+            GPIO_WakeUp_Enable();
+            TRACE_HW_TASK_START(HW_TASK_DS_ID);
+            /* Enter DeepSleep */
+            POWER_EnterDeepSleep(power_down_config);
+            TRACE_HW_TASK_STOP(HW_TASK_DS_ID);
+            /* Disable GPIO WakeUp interrupt */
+            GPIO_WakeUp_Disable();
         }
 
 #ifdef PM_DEBUG

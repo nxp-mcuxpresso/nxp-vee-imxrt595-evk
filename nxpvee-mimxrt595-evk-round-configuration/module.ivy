@@ -1,10 +1,10 @@
 <!--
 	Copyright 2022 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
-	Copyright 2022 NXP
+	Copyright 2022-2023 NXP
 -->
 <ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:m="http://ant.apache.org/ivy/extra" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
-    <info organisation="com.nxp.vee" module="evk_platform" status="integration" revision="1.0.0">
+    <info organisation="com.nxp.vee" module="evk_platform" status="integration" revision="1.1.0">
         <ea:build organisation="com.is2t.easyant.buildtypes" module="build-custom" revision="1.+"/>
     	<ea:plugin org="com.is2t.easyant.plugins" module="eclipse-antRunner" revision="1.+"/>
     	<ea:plugin org="com.is2t.easyant.plugins" module="mam" revision="1.+"/>

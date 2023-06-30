@@ -1,0 +1,7 @@
+<project name="my-project" xmlns:ea="antlib:org.apache.easyant"  xmlns:ivy="antlib:org.apache.ivy.ant">
+    
+    <target name="my-project:custom-properties" extensionOf="platform-launcher:custom-properties">
+        <property name="build-and-deploy.application.output.file" value="${application.output.dir}${file.separator}${application.main.class}${file.separator}SOAR.o"/>
+    </target>
+
+</project>

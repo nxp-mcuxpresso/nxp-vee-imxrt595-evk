@@ -57,6 +57,8 @@
 **********************************************************************
 *                                                                    *
 * Copyright 2017-2022 MicroEJ Corp. This file has been modified by MicroEJ Corp.  *
+* Copyright 2022 NXP                                                 *
+* SPDX-License-Identifier: BSD-3-Clause                              *
 *                                                                    *
 **********************************************************************
 -------------------------- END-OF-HEADER -----------------------------
@@ -721,6 +723,8 @@ static void _SendPacket(U8* pStartPacket, U8* pEndPacket, unsigned int EventId) 
 #if (SEGGER_SYSVIEW_POST_MORTEM_MODE != 1)
   int           Status;
 #endif
+
+  if(EventId == SYSVIEW_EVTID_TASK_STOP_READY) return;
 
 #if (SEGGER_SYSVIEW_USE_STATIC_BUFFER == 0)
   SEGGER_SYSVIEW_LOCK();

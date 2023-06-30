@@ -101,7 +101,7 @@ void MICROVG_HELPER_initialize(void) {
 int MICROVG_HELPER_get_utf(unsigned short *textCharRam, int length, int *offset) {
 
 	unsigned short highPart = GET_NEXT_CHARACTER(textCharRam, length, *offset);
-	int ret;
+	int ret = 0;
 
 	if (((highPart >= MIN_HIGH_SURROGATE) && (highPart <= MAX_HIGH_SURROGATE))
 			&& (*offset < (length - 1))) {

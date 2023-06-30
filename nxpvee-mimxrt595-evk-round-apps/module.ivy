@@ -13,9 +13,10 @@
 				Use property 'platform-loader.target.platform.dir' to set the platform to use. or uncomment the platform dependency (see below).
 				<ea:property name="platform-loader.target.platform.dir" value="[path-to-local-platform]" />
 			-->
+			 <ea:property name="skip.build.virtual.device" value="true" />
 		</ea:build>
 	</info>
-	
+
 	<configurations defaultconfmapping="default->default;provided->provided;vdruntime->default">
 		<conf name="default" visibility="public" description="Runtime dependencies to other artifacts"/>
 		<conf name="provided" visibility="public" description="Compile-time dependencies to APIs provided by the platform"/>
@@ -26,12 +27,12 @@
 		<conf name="dist" visibility="public" description="Contains extra files like README.md, licenses"/>
 		<conf name="test" visibility="private" description="Dependencies for test execution. It is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
 	</configurations>
-	
+
 	<publications>
 		<!-- keep this empty if no specific artifact to publish -->
 		<!-- must be here in order to avoid all configurations for the default artifact -->
 	</publications>
-	
+
 	<dependencies>
 		<!--
 			Put MicroEJ API dependencies and other dependencies here.

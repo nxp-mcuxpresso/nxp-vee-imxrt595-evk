@@ -1,0 +1,18 @@
+# The west manifest file for rt595 microej
+
+manifest:
+  remotes:
+    - name: nxp-mcuxpresso
+      url-base: https://github.com/nxp-mcuxpresso
+  # Please add items below in reverse alphabetical order
+  projects:
+    - name: mcux-sdk
+      remote: nxp-mcuxpresso
+      revision: MCUX_2.12.0
+      path: mcux-sdk/core
+    - name: FreeRTOS-Kernel
+      revision: MCUX_2.12.0
+      remote: nxp-mcuxpresso
+      path: mcux-sdk/rtos/freertos/freertos-kernel
+  self:
+    path: nxp-vee-rt595

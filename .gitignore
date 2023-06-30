@@ -13,6 +13,8 @@ nxpvee-mimxrt595-evk-round-imageGenerator/bin/
 nxpvee-mimxrt595-evk-round-configuration/dropins/scripts/init-microvg/microvginit.xml
 nxpvee-mimxrt595-evk-round-bsp/projects/microej/vglite_patch/
 
+nxpvee-mimxrt595-evk-round-apps/launchers/*.properties
+
 # ctags files
 tags
 TAGS
@@ -27,3 +29,14 @@ ncscope.*
 
 /.metadata
 /.sonarlint
+*~
+.java*
+.*.java.app
+javasec.prop
+
+*.launch
+CMakeCache.txt
+.ninja_log
+.ninja_deps
+build.ninja
+rules.ninja

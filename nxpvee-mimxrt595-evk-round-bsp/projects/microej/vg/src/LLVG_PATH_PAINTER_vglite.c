@@ -3,6 +3,9 @@
  *
  * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
+ *
+ * Copyright 2023 NXP
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /**
@@ -189,7 +192,7 @@ jint LLVG_PATH_PAINTER_IMPL_drawGradient(MICROUI_GraphicsContext* gc, jbyte* pat
 		vg_lite_path_t path = PATH_TO_VGLITEPATH(pathData);
 		void* target = VG_DRAWER_configure_target(gc);
 
-		vg_lite_linear_gradient_t gradient;
+		vg_lite_linear_gradient_t gradient = {0};
 		jfloat* local_gradient_matrix = MICROVG_HELPER_check_matrix(gradientMatrix);
 		vg_lite_error_t vg_lite_error = MICROVG_VGLITE_HELPER_to_vg_lite_gradient(&gradient, gradientData, local_gradient_matrix, matrix, alpha);
 
