@@ -10,7 +10,7 @@
 	<dirname file="${ant.file.jpf.testsuite.core}" property="project"/>
 	<dirname file="${project}" property="workspace.dir"/>
 
-	<property name="target.platform.dir" location="${project}\\..\\..\\..\\..\\MIMXRT595-evk_platform-CM4hardfp_GCC48-1.1.0\\source"/>
+	<property name="target.platform.dir" location="${project}\\..\\..\\..\\..\\MIMXRT595-evk_platform-CM4hardfp_GCC48-1.2.0\\source"/>
 	
 	<target name="java-build:include-tests" extensionOf="abstract-compile:compile-ready" depends="resources-std:copy-test-resources" >
 		<augment id="src.java.path">

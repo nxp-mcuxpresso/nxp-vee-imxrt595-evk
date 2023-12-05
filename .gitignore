@@ -6,6 +6,7 @@ nxpvee-mimxrt595-evk-round-configuration/dropins/mocks/
 nxpvee-mimxrt595-evk-round-configuration/dropins/scripts/
 nxpvee-mimxrt595-evk-round-configuration/dropins/tools/license-checker.jar
 nxpvee-mimxrt595-evk-round-configuration/dropins/tools/imagegenerator-vectorimage.jar
+nxpvee-mimxrt595-evk-round-configuration/dropins/resources/os/
 nxpvee-mimxrt595-evk-round-configuration/dropins/workbenchExtension_*
 nxpvee-mimxrt595-evk-round-bsp/projects/microej/platform/
 MIMXRT595-*-CM4hardfp_GCC48-*
@@ -40,3 +41,6 @@ CMakeCache.txt
 .ninja_deps
 build.ninja
 rules.ninja
+nxpvee-mimxrt595-evk-round-bsp/projects/nxpvee-ui/armgcc/tree_version.c
+nxpvee-mimxrt595-evk-round-bsp/mcux-sdk
+nxpvee-mimxrt595-evk-round-bsp/projects/nxpvee-ui/armgcc/debug

@@ -4,7 +4,7 @@ set S2S_PORT=%2
 
 netstat -an | findstr /RC:":%S2S_PORT% .*LISTENING"
 if /I %errorlevel% NEQ 0 (
-    cd MIMXRT595-evk_platform-CM4hardfp_GCC48-1.1.0/source
+    cd MIMXRT595-evk_platform-CM4hardfp_GCC48-1.2.0/source
     start "s2s.bat" cmd /k java ^
         -Djava.library.path="resources/os/Windows64" ^
         -cp "tools/*" ^

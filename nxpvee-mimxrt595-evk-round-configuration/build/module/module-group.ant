@@ -1,7 +1,7 @@
 <!--
 	ANT
 
-	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Copyright 2020-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	
 -->
@@ -18,8 +18,73 @@
 	<dirname file="${ant.file.module-group}" property="module-group.dir"/>
 	
 	<!-- Enable or disable group "multi" -->
-	<target name="module-group:multi" extensionOf="abstract-compile:compile-ready" if="com.microej.platformbuilder.module.multi.enabled">
-		<module-group-update name="kf" enable="${com.microej.platformbuilder.module.multi.enabled}"/>
+	<target name="module-group:multi" depends="module-group:multi-check" extensionOf="abstract-compile:compile-ready" if="${architecture.multi.module.to.update}">
+		<local name="module.kf.enabled"/>
+		<condition property="module.kf.enabled" value="true">
+			<equals arg1="${com.microej.runtime.capability}" arg2="multi"/>
+		</condition>
+		<condition property="module.kf.enabled" value="false">
+			<or>
+				<equals arg1="${com.microej.runtime.capability}" arg2="mono"/>
+				<equals arg1="${com.microej.runtime.capability}" arg2="tiny"/>
+			</or>
+		</condition>		
+		<module-group-update name="kf" enable="${module.kf.enabled}"/>
+	</target>
+	
+	<!-- 
+		Checks if the "Multi Applications" module is available in the MicroEJ Architecture and 
+		initialize the new property 'com.microej.runtime.capability' if the legacy property 'com.microej.platformbuilder.module.multi.enabled' is set.
+		 
+		Set the property "architecture.multi.module.to.update".
+	-->
+	<target name="module-group:multi-check">
+	
+		<condition property="architecture.version.before.8.1" value="true" else="false">
+			<and>
+				<resourceexists>
+					<url url="jar:file:${microej.architecture.file}!/build/groups/kf/kf.group"/>
+				</resourceexists>
+			</and>
+		</condition>
+	
+		<!--
+			Initialize the property 'com.microej.runtime.capability' (if not explicitely set) to:
+			- 'multi' when 'com.microej.platformbuilder.module.multi.enabled' is set to 'true'.
+			- 'mono' when 'com.microej.platformbuilder.module.multi.enabled' is set to 'false'.
+		-->
+		<condition property="com.microej.runtime.capability" value="multi">
+			<istrue value="${com.microej.platformbuilder.module.multi.enabled}"/>
+		</condition>
+		<condition property="com.microej.runtime.capability" value="mono">
+			<and>
+				<isset property="com.microej.platformbuilder.module.multi.enabled"/>
+				<isfalse value="${com.microej.platformbuilder.module.multi.enabled}"/>
+			</and>
+		</condition>		
+		
+		<!--
+			Update the .platform file to set or unset the KF checkbox only if the "Multi Applications" module is available
+			in the Architecture (<=8.0) and the 'com.microej.runtime.capability' property is set.  			 
+		-->
+		<condition property="architecture.multi.module.to.update" value="true" else="false">
+			<and>
+				<istrue value="${architecture.version.before.8.1}"/>
+				<isset property="com.microej.runtime.capability"/>
+			</and>
+		</condition>
+		
+		<!-- 
+			With Architecture <= 8.0, 'com.microej.runtime.capability' cannot be set to 'tiny'.
+		-->
+		<fail message="The property 'com.microej.runtime.capability' cannot be set to 'tiny' with Architecture 8.0 or older.">
+			<condition>
+				<and>
+					<istrue value="${architecture.version.before.8.1}"/>
+					<equals arg1="${com.microej.runtime.capability}" arg2="tiny"/>
+				</and>
+			</condition>
+		</fail>
 	</target>
 	
 	<!-- Update '.platform' file to add or remove a group-->
@@ -46,13 +111,15 @@
 			</copy>
 			<local name="platform.filename.tmp"/>
 			<tempfile property="platform.filename.tmp" destdir="${java.io.tmpdir}"/>
-			<copy file="@{platform.filename}" tofile="${platform.filename.tmp}"/>
 			<xslt 
 				style="${operation.file.tmp}"
-			    in="${platform.filename.tmp}"
-				out="@{platform.filename}"
+			    in="@{platform.filename}"
+				out="${platform.filename.tmp}"
 				force="true"
 			/>
+			<!-- XLST generates a useless empty line that makes a useless change in the VCS => remove it -->
+			<replace file="${platform.filename.tmp}" token="${line.separator}${line.separator}" value="${line.separator}"/>
+			<copy file="${platform.filename.tmp}" tofile="@{platform.filename}" overwrite="true"/>
 			<echo message="module-group-update[@{name}]"/>
 			<concat>
 				<fileset file="@{platform.filename}"/>

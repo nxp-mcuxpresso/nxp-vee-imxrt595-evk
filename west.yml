@@ -9,10 +9,10 @@ manifest:
     - name: mcux-sdk
       remote: nxp-mcuxpresso
       revision: MCUX_2.12.0
-      path: mcux-sdk/core
+      path: nxp-vee-rt595/nxpvee-mimxrt595-evk-round-bsp/mcux-sdk/core
     - name: FreeRTOS-Kernel
       revision: MCUX_2.12.0
       remote: nxp-mcuxpresso
-      path: mcux-sdk/rtos/freertos/freertos-kernel
+      path: nxp-vee-rt595/nxpvee-mimxrt595-evk-round-bsp/mcux-sdk/rtos/freertos/freertos-kernel
   self:
     path: nxp-vee-rt595

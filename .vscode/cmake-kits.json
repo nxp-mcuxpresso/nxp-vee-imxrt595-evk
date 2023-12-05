@@ -1,0 +1,11 @@
+[
+    {
+        "name": "armgcc",
+        "keep": true,
+        "cmakeSettings": {
+            "LANGUAGE": "C",
+            "DEBUG_CONSOLE": "UART"
+        },
+        "toolchainFile": "${workspaceFolder}/nxpvee-mimxrt595-evk-round-bsp/mcux-sdk/core/tools/cmake_toolchain_files/armgcc.cmake"
+    }
+]

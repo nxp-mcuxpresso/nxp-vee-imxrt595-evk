@@ -1,0 +1,44 @@
+<!--
+	ANT
+
+	Copyright 2020-2023 MicroEJ Corp. All rights reserved.
+	Use of this source code is governed by a BSD-style license that can be found with this software.
+	
+-->
+<project name="module-ripinstall" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!-- Global properties -->
+	<dirname file="${ant.file.module-ripinstall}" property="module-ripinstall.dir"/>
+	<property name="dropins.dir" location="${project.dir}/dropins"/>
+	
+	<!-- Unzip RIPs to dropins folder -->
+    <target name="module-ripinstall:rips" depends="mam:init" extensionOf="abstract-compile:compile-ready">
+    	
+		<path id="allRips">
+		 	<fileset dir="${dependencies.output.dir}" includes="*.rip" erroronmissingdir="false"/>
+		</path>
+
+		<mam:copy destdir="${dropins.dir}">
+			<artifacts refid="allRips"/>
+		</mam:copy>
+    </target>
+	
+	<!--
+		Unzip available rip scripts (in same scripts folder than MicroEJFramework.xml) 
+		
+		This target extracts the rips' scripts to launch during the build of the VEE Port (generally some 
+		autoConfiguration.xml scripts).
+		
+		Note: The extracted scripts are included during the build of the VEE Port thanks to the VEE Port 
+		script "platform-rip.xml".
+	-->
+	<target name="module-module-rip:buildscripts" extensionOf="abstract-compile:compile-ready">
+		<unzip dest="${target}/scripts/rip">
+		 	<fileset dir="${dependencies.output.dir}" includes="*.rip" erroronmissingdir="false"/>
+			<patternset>
+		        <include name="build/**/*"/>
+		    </patternset>
+		</unzip>
+	</target>
+
+</project>

@@ -1,0 +1,9 @@
+/*
+ * Copyright  2023 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+
+const char * GIT_SHA_1 = "@GIT_SHA_1@";
+const char * VEE_VERSION = "@VEE_VERSION@";

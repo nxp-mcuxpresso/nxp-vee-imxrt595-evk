@@ -1,7 +1,7 @@
 <!--
 	ANT
 
-	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Copyright 2020-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	
 -->
@@ -41,6 +41,30 @@
 			Use the project ivysettings since front panel artifacts are deployed in the central repository, not in the build types repository.
 		-->
 		<ivy:settings file="${project.ivy.settings.file}" id="fp.ivysettings"/>
+		
+		<!-- 
+			Resolution of Front Panel must be done in a sandboxed context.
+			Backup/Restore the VEE Port module identification during FP project resolution.
+			See Ivy Resolve documentation:
+			```
+					After the call to this task, four properties are set in ant:
+					- ivy.organisation
+					- ivy.module
+					- ivy.revision
+					- ivy.resolved.configurations
+			```
+		-->
+		<script language="javascript"><![CDATA[
+	    	var organisationBak = project.getProperty('ivy.organisation')
+	    	project.setProperty('ivy.organisation.fp.bak', organisationBak)
+	    	var moduleBak = project.getProperty('ivy.module')
+	    	project.setProperty('ivy.module.fp.bak', moduleBak)
+	    	var revisionBak = project.getProperty('ivy.revision')
+	    	project.setProperty('ivy.revision.fp.bak', revisionBak)
+	    	var resolvedConfigurationsBak = project.getProperty('ivy.resolved.configurations')
+	    	project.setProperty('ivy.resolved.configurations.fp.bak', resolvedConfigurationsBak)
+	  	]]>
+		</script>
 		<ivy:resolve
 			file="${fp.project.dir}/module.ivy"
 			conf="default,provided"
@@ -50,6 +74,17 @@
 			pattern="${fp.project.dir}/lib/[type]s/[artifact](-[classifier])-[revision].[ext]"
 			settingsref="fp.ivysettings"
 		/>
+		<script language="javascript"><![CDATA[
+	    	var organisationBak = project.getProperty('ivy.organisation.fp.bak')
+	    	project.setProperty('ivy.organisation', organisationBak)
+	    	var moduleBak = project.getProperty('ivy.module.fp.bak')
+	    	project.setProperty('ivy.module', moduleBak)
+	    	var revisionBak = project.getProperty('ivy.revision.fp.bak')
+	    	project.setProperty('ivy.revision', revisionBak)
+	    	var resolvedConfigurationsBak = project.getProperty('ivy.resolved.configurations.fp.bak')
+	    	project.setProperty('ivy.resolved.configurations', resolvedConfigurationsBak)
+	  	]]>
+		</script>
 	</target>
 
 </project>

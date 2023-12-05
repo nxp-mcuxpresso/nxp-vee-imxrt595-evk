@@ -8,7 +8,7 @@
 -->
 <ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
 	<info organisation="com.nxp" module="FrontPanel" status="integration" revision="0.4.3">
-		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-std-javalib" revision="2.0.+"/>
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-std-javalib" revision="3.2.+"/>
 	</info>
 	
 	<configurations defaultconfmapping="default->default;provided->*">

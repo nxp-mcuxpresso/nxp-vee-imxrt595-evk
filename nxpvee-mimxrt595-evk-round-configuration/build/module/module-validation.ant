@@ -1,7 +1,7 @@
 <!--
 	ANT
 
-	Copyright 2020-2021 MicroEJ Corp. All rights reserved.
+	Copyright 2020-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	
 -->
@@ -49,7 +49,7 @@
 		</condition>
 		
 		<!-- build BSP in tmp folder; do not need to unzip platform artifact -->
-		<property name="bsp.microejscript.path" location="${platform.publish.dir}/${platform.project.name}/source/bsp/${bsp.microejscript.relative.dir}/${bsp.microejscript.name}.${bsp.microejscript.extension}"/>
+		<property name="bsp.microejscript.path" location="${platform.publish.source.dir}/bsp/${bsp.microejscript.relative.dir}/${bsp.microejscript.name}.${bsp.microejscript.extension}"/>
 		<fail message="The BSP project build script file is undefined (${bsp.microejscript.path})">
 			<condition>
 				<not>

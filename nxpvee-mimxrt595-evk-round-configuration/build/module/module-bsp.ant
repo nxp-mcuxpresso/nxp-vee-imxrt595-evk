@@ -1,7 +1,7 @@
 <!--
 	ANT
 
-	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Copyright 2020-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	
 -->
@@ -37,18 +37,24 @@
 	<import file="${module-bsp.dir}/module-platform.ant"/>
 	
 	<!-- Copy BSP into the platform -->
-    <target name="module-bsp:preparePublication" extensionOf="abstract-compile:compile" depends="module-platform:preparePublication" if="bsp.root.dir" unless="${skip.publish}">
-    	
-        <!-- Copy BSP unless it exists already (to prevent a recompilation) -->
-    	<copy todir="${platform.publish.dir}/${platform.project.name}/source/bsp" overwrite="false" >
-			<fileset dir="${bsp.root.dir}" includes="**/*"/>
+	<target name="module-bsp:preparePublication" extensionOf="abstract-compile:compile" depends="module-platform:preparePublication" if="bsp.root.dir" unless="${skip.publish}">
+
+		<property name="bsp.copy.includes.pattern" value="**/*"/>
+		<property name="bsp.copy.excludes.pattern" value=""/>
+
+		<echo message="Included paths from BSP copy : ${bsp.copy.includes.pattern}"/>
+		<echo message="Excluded paths from BSP copy : ${bsp.copy.excludes.pattern}"/>
+
+		<!-- Copy BSP unless it exists already (to prevent a recompilation) -->
+    	<copy todir="${platform.publish.source.dir}/bsp" overwrite="false" >
+			<fileset dir="${bsp.root.dir}" includes="${bsp.copy.includes.pattern}" excludes="${bsp.copy.excludes.pattern}"/>
 		</copy>
-    	
-    	<!-- BSP root dir option becomes useless (and disturbing) -->
-    	<propertyfile file="${platform.publish.dir}/${platform.project.name}/source/scripts/deployInBSP.properties">
+
+		<!-- BSP root dir option becomes useless (and disturbing) -->
+    	<propertyfile file="${platform.publish.source.dir}/scripts/deployInBSP.properties">
 			<entry key="deploy.bsp.local.root.dir" operation="del"/>
-    	</propertyfile>
-    	
-    </target>
+		</propertyfile>
+
+	</target>
 	
 </project>

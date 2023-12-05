@@ -10,11 +10,11 @@ if (NOT DEFINED SdkOverlayRootDirPath)
 endif()
 
 if (NOT DEFINED SdkRootDirPath)
-    SET(SdkRootDirPath ${ProjDirPath}/../../../../../mcux-sdk/core/)
+    SET(SdkRootDirPath ${ProjDirPath}/../../../mcux-sdk/core/)
 endif()
 
 if (NOT DEFINED RtosRootDirPath)
-    SET(RtosRootDirPath ${ProjDirPath}/../../../../../mcux-sdk/rtos/)
+    SET(RtosRootDirPath ${ProjDirPath}/../../../mcux-sdk/rtos/)
 endif()
 
 if (NOT DEFINED MicroejDirPath)
@@ -25,7 +25,13 @@ SET(EXECUTABLE_OUTPUT_PATH ${ProjDirPath}/${CMAKE_BUILD_TYPE})
 SET(LIBRARY_OUTPUT_PATH ${ProjDirPath}/${CMAKE_BUILD_TYPE})
 message(${EXECUTABLE_OUTPUT_PATH})
 
+set(MCUX_BUILD_TYPES debug release)
+
+find_package(Git)
+
 project(mimxrt595_freertos-bsp C)
+
+file (STRINGS "${ProjDirPath}/../../../nvee_version.txt" VEE_VERSION)
 
 set(MCUX_DEVICE MIMXRT595S_cm33)
 set(PROJECT_NAME mimxrt595_freertos-bsp)
@@ -36,6 +42,14 @@ set(CONFIG_USE_component_serial_manager_uart true)
 set(CONFIG_USE_driver_flexcomm_usart true)
 
 include (${ProjDirPath}/flags.cmake)
+
+execute_process(COMMAND
+  "${GIT_EXECUTABLE}" describe --always --abbrev=8 --dirty
+  WORKING_DIRECTORY "${ProjDirPath}"
+  OUTPUT_VARIABLE GIT_SHA_1
+  ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+configure_file("${ProjDirPath}/../main/src/tree_version.c.in" "${CMAKE_CURRENT_BINARY_DIR}/tree_version.c" @ONLY)
 
 add_executable(${MCUX_SDK_PROJECT_NAME}
     "${ProjDirPath}/../board/src/board.c"
@@ -111,6 +125,7 @@ add_executable(${MCUX_SDK_PROJECT_NAME}
     "${MicroejDirPath}/vglite_window/vglite_window.c"
     "${MicroejDirPath}/stub/src/stub.c"
     "${SdkRootDirPath}/devices/MIMXRT595S/mcuxpresso/startup_mimxrt595s_cm33.c"
+    ${CMAKE_CURRENT_BINARY_DIR}/tree_version.c
 )
 
 target_include_directories(${MCUX_SDK_PROJECT_NAME}  PRIVATE

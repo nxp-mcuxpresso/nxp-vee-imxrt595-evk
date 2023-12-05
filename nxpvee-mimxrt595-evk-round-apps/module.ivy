@@ -1,12 +1,12 @@
 <!--
-	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Copyright 2022-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	Copyright 2022 NXP
 -->
 
 <ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:m="http://ant.apache.org/ivy/extra" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
 	<info organisation="com.nxp" module="evk_round_apps" status="integration" revision="0.1.0">
-		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-firmware-singleapp" revision="2.1.+">
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-firmware-singleapp" revision="2.2.+">
 			<ea:property name="application.main.class" value="com.nxp.Main" />
 			<ea:property name="test.run.includes.pattern" value="**/_AllTests_*.class"/>
 			<!--

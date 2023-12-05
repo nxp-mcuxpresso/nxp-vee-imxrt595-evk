@@ -1,0 +1,11 @@
+{
+  "cmake.configureOnOpen": false,
+  "C_Cpp.errorSquiggles": "disabled",
+  "cmake.preferredGenerators": [
+    "Ninja",
+    "Unix Makefiles",
+    "MinGW Makefiles"
+  ],
+  "cmake.sourceDirectory": "${workspaceFolder}/nxpvee-mimxrt595-evk-round-bsp/projects/nxpvee-ui/armgcc",
+  "cmake.buildDirectory": "${workspaceFolder}/nxpvee-mimxrt595-evk-round-bsp/projects/nxpvee-ui/armgcc/${buildType}"
+}

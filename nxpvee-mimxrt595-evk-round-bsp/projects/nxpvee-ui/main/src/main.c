@@ -1,5 +1,7 @@
 /*
- * C
+ * Copyright 2023 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Copyright 2019-2022 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
@@ -34,6 +36,10 @@
 #include "SEGGER_SYSVIEW.h"
 #endif
 
+#ifndef __MCUXPRESSO
+#include "tree_version.h"
+#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -59,7 +65,7 @@ void xJavaTaskFunction(void * pvParameters) {
 #if MONITOR_ENABLED == 1
     monitor_init();
 #endif
-
+	PRINTF("NXP VEE Port '%s' '%s'\r\n", VEE_VERSION, GIT_SHA_1);
 	microjvm_main();
 	vTaskDelete(xTaskGetCurrentTaskHandle());
 }

@@ -34,6 +34,7 @@ endif
 
 .java.configuration:
 	cd $(CONF_DIR) $(LINK) $(MICROEJ_BUILDKIT_PATH_VAR)/bin/mmm publish  \
+		$(PUBLISH_ARTIFACTS) \
 		-Declipse.home="$(ECLIPSE_HOME)" \
 		-Dcom.microej.platformbuilder.architecture.usage=$(USAGE) \
 		$(MODULE_REPOSITORY_SETTINGS) \
@@ -71,7 +72,7 @@ javasec.prop :
 		-Declipse.home="$(ECLIPSE_HOME)" \
 		$(MODULE_REPOSITORY_SETTINGS) \
 		-Dcom.microej.platformbuilder.architecture.usage=$(USAGE) \
-		-Dplatform-loader.target.platform.dir=$(PLAT_DIR)/ \
+		-Dplatform-loader.target.platform.dir=$(PLAT_DIR)/source \
 		-Dplatform-launcher.platform.dir=$(PLAT_DIR)/source \
 		-Dapplication.main.class=$(if $(MAIN),$(MAIN),$(MAIN$@)) \
 		-Dlaunch.properties.jvm="-Djava.security.properties=$(BASE_DIR)/javasec.prop" \
@@ -110,7 +111,7 @@ $(addsuffix -java_run,$(PROJS)): .java.fp .java.mock .java.configuration
 		-Dapplication.main.class=$(if $(MAIN),$(MAIN),$(MAIN.$(@:%-java_run=%).java.app)) \
 		-Dplatform-launcher.platform.dir=$(PLAT_DIR)/source $(JAVA_VERBOSE)
 
-$(addsuffix -java_rebuild,$(PROJS)):
+$(addsuffix -java_rebuild,$(PROJS)): .java.fp .java.mock .java.configuration
 	$(call del_file,.*.java.app)
 	make .$(@:%-java_rebuild=%).java.app
 
@@ -125,6 +126,11 @@ $(addsuffix -clean,$(PROJS)):
 	$(call del_file,$(CONF_DIR)/dropins/imagegenerator-vectorimage.jar)
 	$(call del_file,$(CONF_DIR)/dropins/license-checker.jar)
 	$(call del_dir,$(CONF_DIR)/target~/)
+	$(call del_dir,$(CONF_DIR)/dropins/include)
+	$(call del_dir,$(CONF_DIR)/dropins/javaLibs)
+	$(call del_dir,$(CONF_DIR)/dropins/mocks)
+	$(call del_dir,$(CONF_DIR)/dropins/scripts)
+	$(call del_file,$(CONF_DIR)/dropins/workbenchExtension_launchScriptFramework.jar)
 	$(call del_dir,$(FP_DIR)/bin/)
 	$(call del_dir,$(FP_DIR)/lib/)
 	$(call del_dir,$(FP_DIR)/target~/)

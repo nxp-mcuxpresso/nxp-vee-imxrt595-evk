@@ -1,31 +1,44 @@
 <!--
-	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Copyright 2022-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	Copyright 2022-2023 NXP
 -->
 <ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:m="http://ant.apache.org/ivy/extra" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
-    <info organisation="com.nxp.vee" module="evk_platform" status="integration" revision="1.1.0">
-        <ea:build organisation="com.is2t.easyant.buildtypes" module="build-custom" revision="1.+"/>
-    	<ea:plugin org="com.is2t.easyant.plugins" module="eclipse-antRunner" revision="1.+"/>
-    	<ea:plugin org="com.is2t.easyant.plugins" module="mam" revision="1.+"/>
-    	<ea:plugin org="com.is2t.easyant.plugins" module="ivy-retrieve" revision="1.+"/>
-    	<ea:plugin org="com.is2t.easyant.plugins" module="mccom-install" revision="1.3.+"/>
-		<ea:property name="com.microej.platformbuilder.bsp.microejcco.relative.dir" value="projects/microej" description="BSP relative folder where deploying the CCOs."/> 
-    </info>
-    
-    <configurations>
-        <conf name="default" visibility="public" description="runtime dependencies artifact can be used with this conf"/>
-        <conf name="test" visibility="private" description="this scope indicates that the dependency is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
-        <conf name="provided" visibility="public" description="this is much like compile, but indicates you expect the JDK or a container to provide it. It is only available on the compilation classpath, and is not transitive."/>
-        <conf name="source" visibility="public" description="source code and architectures"/>
-		<conf name="documentation" visibility="public" description="socumentation files"/>
-    </configurations>
-    
-    <publications>
+	<info organisation="com.nxp.vee.mimxrt595" module="evk_platform" status="integration" revision="1.2.0">
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-custom" revision="2.2.+"/>
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-custom" revision="2.2.+"/>
+		<ea:plugin org="com.is2t.easyant.plugins" module="eclipse-antRunner" revision="1.+"/>
+		<ea:plugin org="com.is2t.easyant.plugins" module="mam" revision="1.+"/>
+
+		<ea:plugin org="com.is2t.easyant.plugins" module="changelog" revision="3.0.+"/>
+		<ea:plugin org="com.is2t.easyant.plugins" module="license" revision="3.0.+"/>
+		<ea:plugin org="com.is2t.easyant.plugins" module="readme" revision="3.0.+"/>
+
+		<!-- Retrieve embedded and default dependencies -->
+		<ea:property name="dependencies.retrieve.conf" value="embedded,default" />
+		<ea:plugin org="com.is2t.easyant.plugins" module="ivy-retrieve" revision="1.+"/>
+		
+		<ea:property name="skip.license.checker" value="true" />
+		<ea:property name="skip.changelog.checker" value="true" />
+
+		<ea:plugin org="com.is2t.easyant.plugins" module="mccom-install" revision="1.3.+"/>
+		<ea:property name="com.microej.platformbuilder.bsp.microejcco.relative.dir" value="projects/microej" description="BSP relative folder where deploying the CCOs."/>
+	</info>
+	
+	<configurations defaultconfmapping="embedded->default">
+		<conf name="default" visibility="public" description="Runtime dependencies to other artifacts"/>
+		<conf name="provided" visibility="public" description="Compile-time dependencies to APIs provided by the VEE Port"/>
+		<conf name="documentation" visibility="public" description="Documentation related to the artifact (javadoc, PDF)"/>
+		<conf name="dist" visibility="public" description="Contains extra files like README.md, licenses"/>
+		<conf name="source" visibility="public" description="Source code"/>
+		<conf name="embedded" visibility="private" description="VEE Port dependencies. Use only for MicroEJ Architecture and MicroEJ Packs required to build the VEE Port."/>
+	</configurations>
+	
+	<publications>
 	</publications>
-    
-    <dependencies>
-    
+	
+	<dependencies>
+	
 		<!-- architectures -->
 		<dependency org="com.microej.architecture.CM4.${xpf.toolchain.name}" name="${xpf.name}" rev="${xpf.revision}">
 			<artifact name="${xpf.name}" m:classifier="${com.microej.platformbuilder.architecture.usage}" ext="xpf"/>
@@ -34,18 +47,17 @@
 			<artifact name="${xpf.name}-ui-pack" ext="xpfp"/>
 		</dependency>
 		<dependency org="com.microej.pack.vg" name="vg-pack" rev="1.1.1"/>
-	    <!-- CCO begin 
+		<!-- CCO begin 
 		<dependency org="com.microej.clibrary.llimpl" name="trace-systemview" rev="2.1.2" transitive="false"/>
 		<dependency org="com.microej.clibrary.thirdparty" name="systemview" rev="1.3.1"  transitive="false"/>
 		<dependency org="com.microej.clibrary.thirdparty" name="systemview-freertos10" rev="1.1.1" transitive="false"/>
 		<dependency org="com.microej.clibrary.llimpl" name="microvg-vglite" rev="3.0.0" />
 		<dependency org="com.microej.clibrary.thirdparty" name="harfbuzz" rev="1.0.0" transitive="false"/>-->
+		<!-- CCO end -->
 		
-        <!-- CCO end -->
-        
-        <!-- mocks -->
-        <dependency org="com.nxp.vee" name="evk_platform_mock" rev="1.0.0"/>
+		<!-- mocks -->
+		<dependency org="com.nxp.vee" name="evk_platform_mock" rev="1.0.0"/>
+		<dependency org="com.microej.tool" name="javafx" rev="1.2.0"/>
 
-    </dependencies>
-    
+	</dependencies>
 </ivy-module>

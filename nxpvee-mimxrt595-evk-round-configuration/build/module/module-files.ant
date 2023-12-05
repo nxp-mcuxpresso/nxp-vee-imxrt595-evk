@@ -16,7 +16,7 @@
 
     <!-- Configure additional resources README, CHANGELOG and RELEASE_NOTES -->
 	<property name="additional.readme.dir" value="${project.parent.dir}" />
-	<property name="additional.readme.ext" value="rst" />
+	<property name="additional.readme.ext" value="md" />
     <property name="additional.readme.name" value="README" />
     <property name="additional.readme.file" location="${additional.readme.dir}/${additional.readme.name}.${additional.readme.ext}" />
     <available file="${additional.readme.file}" property="has.additional.readme.file" />
@@ -32,5 +32,17 @@
 	<property name="additional.releasenotes.name" value="RELEASE_NOTES"/>
 	<property name="additional.releasenotes.file" location="${additional.releasenotes.dir}/${additional.releasenotes.name}.${additional.releasenotes.ext}"/>
 	<available file="${additional.releasenotes.file}" property="has.additional.releasenotes.file" />
-		
+	
+	<property name="additional.nxp-license.dir" value="${project.parent.dir}" />
+	<property name="additional.nxp-license.ext" value="txt" />
+	<property name="additional.nxp-license.name" value="EULA-EVAL"/>
+	<property name="additional.nxp-license.file" location="${additional.nxp-license.dir}/${additional.nxp-license.name}.${additional.nxp-license.ext}"/>
+	<available file="${additional.nxp-license.file}" property="has.additional.nxp-license.file" />
+	
+	<property name="additional.nxp-scr.dir" value="${project.parent.dir}" />
+	<property name="additional.nxp-scr.ext" value="txt" />
+	<property name="additional.nxp-scr.name" value="SCR-nxpvee-mimxrt595-evk"/>
+	<property name="additional.nxp-scr.file" location="${additional.nxp-scr.dir}/${additional.nxp-scr.name}.${additional.nxp-scr.ext}"/>
+	<available file="${additional.nxp-scr.file}" property="has.additional.nxp-scr.file" />
+	
 </project>

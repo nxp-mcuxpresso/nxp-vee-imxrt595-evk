@@ -1,7 +1,7 @@
 <!--
 	ANT
 
-	Copyright 2020-2021 MicroEJ Corp. All rights reserved.
+	Copyright 2020-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	
 -->
@@ -34,5 +34,95 @@
 		<copy todir="${target.artifacts}" file="${additional.releasenotes.file}" />
 		<ea:registerartifact name="${additional.releasenotes.name}" type="${additional.releasenotes.ext}" ext="${additional.releasenotes.ext}" settingsRef="${project.ivy.instance}" confs="dist" />
 	</target>
+
+	<!-- Publish NXP LICENSE file -->
+	<target name="module-publish:additional-files:nxp-license" extensionOf="package" if="has.additional.nxp-license.file" unless="${skip.publish}">
+		<copy todir="${target.artifacts}" file="${additional.nxp-license.file}" />
+		<ea:registerartifact name="${additional.nxp-license.name}" type="${additional.nxp-license.ext}" ext="${additional.nxp-license.ext}" settingsRef="${project.ivy.instance}" confs="dist" />
+	</target>
+
+	<!-- Publish NXP SCR file -->
+	<target name="module-publish:additional-files:nxp-scr" extensionOf="package" if="has.additional.nxp-scr.file" unless="${skip.publish}">
+		<copy todir="${target.artifacts}" file="${additional.nxp-scr.file}" />
+		<ea:registerartifact name="${additional.nxp-scr.name}" type="${additional.nxp-scr.ext}" ext="${additional.nxp-scr.ext}" settingsRef="${project.ivy.instance}" confs="dist" />
+	</target>
+
+	<!-- Translate changelog file for artifact checker -->
+	<target name="module-publish:artifactchecker-files:changelog" extensionOf="package" if="has.additional.changelog.file" depends="changelog:init" unless="${skip.publish}">
+		<copy tofile="${target.artifacts}/${changelog.name}.${changelog.ext}" file="${additional.changelog.file}" />
+		<replaceregexp file="${target.artifacts}/${changelog.name}.${changelog.ext}" match="^\s*\[" replace="## [" flags="gm"/>
+	</target>
+
+	<!-- 
+		Ignore README file for artifact checker 
+		(content is VEE Port specific)
+	-->
+	<target name="module-publish:artifactchecker-files:readme" extensionOf="package" unless="${skip.publish}">
+		<ea:property name="skip.readme.checker" value="true"/>
+	</target>
+
+	<!-- 
+		Publish
+		- 'NOTICE.txt' with the list of core Architecture files under SDK EULA license agreement.
+		- 'MICROEJ_SDK_EULA.txt' extracted from Architecture dependency. 
+	-->
+	<target name="module-publish:notice" extensionOf="package" unless="${skip.publish}" depends="license:init">
+		<property name="xpf.sdk-eula.file.name" value="LicenseAgreement.txt"/>
+		<property name="sdk-eula.file.simplename" value="MICROEJ_SDK_EULA"/>
+		<property name="notice.file.simplename" value="NOTICE"/>
+		<property name="notice.file.name" value="${notice.file.simplename}.${license.ext}"/>
+		<property name="notice.file.path" value="${target.artifacts}/${notice.file.name}"/>
+		
+		<!--
+			Include VEE Port all but dropins files: Architecture (.xpf), UI Pack and legacy Packs (.xpfp) under pure SDK EULA. 
+			The dropins folder contains MicroEJ Corp. additional Packs under SDK/BSD license and customer specific Packs with their own license.
+		-->
+		<fileset id="architecture-files" dir="${platform.publish.source.dir}" excludes="javaAPIs/**,bsp/**">
+		    <different targetdir="${project.dir}/dropins"/>
+		</fileset>	
+		<!-- Include core runtime files deployed in BSP (optional) --> 
+		<fileset id="bsp-microej-runtime" dir="${platform.publish.source.dir}" includes="bsp/**/*microejruntime*"/>
+				
+		<unzip dest="${target.artifacts}">
+			<fileset dir="${dependencies.output.dir}" includes="*.xpf">
+			</fileset>
+			<patternset>
+				<include name="${xpf.sdk-eula.file.name}"/>
+		    </patternset>
+		</unzip>
+		<move failonerror="true" file="${target.artifacts}/${xpf.sdk-eula.file.name}" tofile="${target.artifacts}/${sdk-eula.file.simplename}.${license.ext}"/>
+		<ea:registerartifact name="${sdk-eula.file.simplename}" type="${license.type}" ext="${license.ext}" settingsRef="${project.ivy.instance}" confs="dist" />
+	
+		<pathconvert pathsep="${line.separator}" property="notice.list.1" refid="architecture-files">
+			<mapper>
+			   	<globmapper from="${platform.publish.source.dir}/*" to="- *" handledirsep="yes"/>
+			</mapper>
+		</pathconvert>
+		
+		<pathconvert pathsep="${line.separator}" property="notice.list.2" refid="bsp-microej-runtime">
+			<mapper>
+			   	<globmapper from="${platform.publish.source.dir}/*" to="- *" handledirsep="yes"/>
+			</mapper>
+		</pathconvert>
+		<echo file="${notice.file.path}">This package contains software licensed under their own terms:
+
+# Notices for file(s):
+
+${notice.list.1}
+${notice.list.2}
+				
+## Copyright Header
+
+	Copyright MicroEJ Corp. All rights reserved.
+	MicroEJ Corp. PROPRIETARY. Use is subject to license terms.
+
+## License
+				
+	See the attached `${sdk-eula.file.simplename}` file.
+</echo>		
+			<replace token="${file.separator}" value="/" file="${notice.file.path}"/>
+		<ea:registerartifact name="${notice.file.simplename}" type="${license.type}" ext="${license.ext}" settingsRef="${project.ivy.instance}" confs="dist" />
+	</target>
+
 
 </project>

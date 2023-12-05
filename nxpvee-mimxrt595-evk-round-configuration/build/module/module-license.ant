@@ -1,7 +1,7 @@
 <!--
 	ANT
 
-	Copyright 2020 MicroEJ Corp. All rights reserved.
+	Copyright 2020-2022 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	
 -->
@@ -17,7 +17,7 @@
 
 	<!-- Copy available license files -->
 	<target name="module-license:eval" extensionOf="abstract-compile:compile-ready">
-		<java classpath="${module-license.dir}/module-dropins/tools/license-checker.jar" classname="com.microej.tool.WorkbenchKeystoreSynchronizer">
+		<java classpath="${module-license.dir}/license-checker.jar" classname="com.microej.tool.WorkbenchKeystoreSynchronizer">
 			<sysproperty key="licenses.working.dir" value="${platform.architecture.repository}/1.6/data/keystore"/>
 		</java>
 	</target>

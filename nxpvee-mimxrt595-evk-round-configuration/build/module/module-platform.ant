@@ -1,11 +1,11 @@
 <!--
 	ANT
 
-	Copyright 2020-2021 MicroEJ Corp. All rights reserved.
+	Copyright 2020-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	
 -->
-<project name="module-platform" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="module-platform" xmlns:ea="antlib:org.apache.easyant" xmlns:mam="antlib:com.is2t.mam.ant" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:if="ant:if">
 
 	<!--
 		This script builds the platform in the current workspace (it uses an Eclipse ant runner in the current workspace).
@@ -207,6 +207,7 @@
 				<arg value="-Dplatform.project.name=${workbench.platform.project.name}"/>
 				<arg value="-Dplatform.output.dir=${target}"/>
 				<arg value="-Dscripts.dir=${target}/scripts"/>
+				<arg value="-Dcom.microej.runtime.capability=${com.microej.runtime.capability}" if:set="com.microej.runtime.capability"/>
 			</args.properties>
 		</runEclipseAntRunner>
 		
@@ -275,6 +276,7 @@
 	<!-- Copy the platform in target output dir -->
 	<target name="module-platform:preparePublication" extensionOf="abstract-compile:compile" depends="module-platform:move" unless="${skip.publish}">
 		<property name="platform.publish.dir" location="${target}/platform"/>
+    	<property name="platform.publish.source.dir" value="${platform.publish.dir}/${platform.project.name}/source"/>
 		<copy todir="${platform.publish.dir}/${platform.project.name}">
 			<fileset dir="${project.parent.dir}/${platform.project.name}" includes="**/*"/>
 		</copy>

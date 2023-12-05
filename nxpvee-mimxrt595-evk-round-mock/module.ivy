@@ -1,5 +1,5 @@
 <!--
-	Copyright 2022 MicroEJ Corp. All rights reserved.
+	Copyright 2022-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 	Copyright 2022 NXP
 -->
@@ -23,11 +23,6 @@
 	</publications>
 	
 	<dependencies>
-		<!--
-			Put your project dependencies here. An example of project dependency declaration
-			is provided below:
-			
-			<dependency org="[org]" name="[otherArtifact]" rev="M.m.p" conf="embedded->default"/>
-		-->
+		<dependency org="com.microej.tool" name="javafx" rev="1.2.0"/>
 	</dependencies>
 </ivy-module>

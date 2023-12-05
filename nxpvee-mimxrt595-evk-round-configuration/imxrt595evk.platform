@@ -1,15 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?><platform hardwarePartNumber="MIMXRT595" name="evk_platform" version="1.1.0" provider="NXP" vendorUrl="https://www.nxp.com" workbenchMinVersion="1.7.0">
-    <environment architecture="CM4" baseline="14" hardwarePartNumber="CM4" toolchain="CM4hardfp_GCC48" name="flopi4G25" techVersion="1.6" version="7.17.0" level="eval" provider="MicroEJ" licenseTag="IS2T_J8F5C"/>
+<?xml version="1.0" encoding="UTF-8"?><platform hardwarePartNumber="MIMXRT595" name="evk_platform" version="1.2.0" provider="NXP" vendorUrl="https://www.nxp.com" workbenchMinVersion="1.7.0">
+        
+    <environment architecture="CM4" baseline="14" hardwarePartNumber="CM4" toolchain="CM4hardfp_GCC48" name="flopi4G25" techVersion="1.6" version="7.20.1" level="eval" provider="MicroEJ" licenseTag="IS2T_J8F5C"/>
+            
+    
     <group name="externalResources"/>
+            
+    
     <group name="frontPanel"/>
+            
+    
     <group name="extensible">
+                        
+        
         <without name="sp"/>
+                        
+        
         <without name="MicroEJavah"/>
+                    
+    
     </group>
+            
+    
     <group name="net"/>
+            
+    
     <group name="management"/>
+            
+    
     <group name="ui">
+                        
+        
         <without name="leds"/>
+                    
+    
     </group>
+            
+    
     <group name="wifi"/>
+        
 </platform>

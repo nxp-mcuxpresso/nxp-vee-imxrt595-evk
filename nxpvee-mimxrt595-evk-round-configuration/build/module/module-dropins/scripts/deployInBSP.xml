@@ -2,7 +2,7 @@
 <!-- 
 	ANT
 	
-	Copyright 2015-2021 MicroEJ Corp. All rights reserved.
+	Copyright 2015-2023 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 -->
 
@@ -10,7 +10,7 @@
 	
 	<dirname file="${ant.file.deployInBSP}" property="scripts.dir"/>
 	<property name="deploy.bsp.microejapp.filename" value="microejapp.o" description="same name than augmentCProject"/>
-    <property name="deploy.bsp.microejapp.asm.filename" value="microejapp.s"/>
+	<property name="deploy.bsp.microejapp.asm.filename" value="microejapp.s"/>
 	
 	<import file="${scripts.dir}/deployInBSPCommon.xml"/>
 	
@@ -36,7 +36,7 @@
 		<property name="deploy.microejapp.file" location="${deploy.platform.app.output.dir}/lib/${deploy.bsp.microejapp.filename}"/>
 		<copy file="${deploy.binary.file}" tofile="${deploy.microejapp.file}" overwrite="true"/>
 
-        <!-- Copy SOAR.s if it exists -->
+		<!-- Copy SOAR.s if it exists -->
 		<dirname file="${deploy.binary.file}" property="deploy.binary.file.dir"/>
 		<basename file="${deploy.binary.file}" property="deploy.binary.file.noextension" suffix="o"/>
 		<property name="deploy.asm.file" location="${deploy.binary.file.dir}/${deploy.binary.file.noextension}.s" />
@@ -108,17 +108,17 @@
 		
 		<copy file="${deploy.microejapp.file}" tofile="${deploy.bsp.microejapp.location}" overwrite="true"/>
 
-        <!-- Copy ASM file if it exists -->
-        <!-- 1. Get source ASM file location. -->
+		<!-- Copy ASM file if it exists -->
+		<!-- 1. Get source ASM file location. -->
 		<dirname file="${deploy.microejapp.file}" property="deploy.microejapp.file.dir"/>
 		<basename file="${deploy.microejapp.file}" property="deploy.microejapp.file.noextension" suffix="o"/>
 		<property name="deploy.asm.file" location="${deploy.microejapp.file.dir}/${deploy.microejapp.file.noextension}.s" />
 
-        <!-- 2. Get destination dir -->
-        <dirname file="${deploy.bsp.microejapp.location}" property="deploy.bsp.microejapp.location.dir" />
+		<!-- 2. Get destination dir -->
+		<dirname file="${deploy.bsp.microejapp.location}" property="deploy.bsp.microejapp.location.dir" />
 		<property name="deploy.bsp.microejapp.asm.file" location="${deploy.bsp.microejapp.location.dir}/${deploy.bsp.microejapp.asm.filename}"/>
 
-        <!-- 3. Copy ASM file if it exists to destination dir -->
+		<!-- 3. Copy ASM file if it exists to destination dir -->
 		<copy file="${deploy.asm.file}" tofile="${deploy.bsp.microejapp.asm.file}" overwrite="true" failonerror="false" quiet="true" />
 		
 		<deploy.printReport 
@@ -135,16 +135,16 @@
 		
 		<copy file="${deploy.microejapp.file}" todir="${deploy.bsp.microejapp.dir}" overwrite="true"/>
 
-        <!-- Copy ASM file if it exists -->
-        <!-- 1. Get source ASM file location. -->
+		<!-- Copy ASM file if it exists -->
+		<!-- 1. Get source ASM file location. -->
 		<dirname file="${deploy.microejapp.file}" property="deploy.microejapp.file.dir"/>
 		<basename file="${deploy.microejapp.file}" property="deploy.microejapp.file.noextension" suffix="o"/>
 		<property name="deploy.asm.file" location="${deploy.microejapp.file.dir}/${deploy.microejapp.file.noextension}.s" />
 
-        <!-- 2. Set destination dir -->
+		<!-- 2. Set destination dir -->
 		<property name="deploy.bsp.microejapp.asm.file" location="${deploy.bsp.microejapp.dir}/${deploy.bsp.microejapp.asm.filename}"/>
 
-        <!-- 3. Copy ASM file if it exists to destination dir -->
+		<!-- 3. Copy ASM file if it exists to destination dir -->
 		<copy file="${deploy.asm.file}" tofile="${deploy.bsp.microejapp.asm.file}" overwrite="true" failonerror="false" quiet="true" />
 		
 		<deploy.printReport 
@@ -195,8 +195,15 @@
 		/>
 		
 	</target>
-	
-	<target name="deployInBSP:exec:script:dir" extensionOf="deployInBSP:copy:custom" depends="deployInBSP:copy:app:dir,deployInBSP:copy:lib:dir,deployInBSP:copy:inc:dir" if="deploy.bsp.microejscript.dir">
+
+		<!--
+				Convert .sh files to Unix-style line endings.
+		-->
+		<target name="deployInBSP:convert:scripts:dir" extensionOf="deployInBSP:copy:custom">
+				<fixcrlf srcdir="${deploy.bsp.root.dir.computed}/${deploy.bsp.microejscript.relative.dir}" includes="*.sh" eol="unix" />
+		</target>
+
+	<target name="deployInBSP:exec:script:dir" extensionOf="deployInBSP:copy:custom" depends="deployInBSP:copy:app:dir,deployInBSP:copy:lib:dir,deployInBSP:copy:inc:dir,deployInBSP:convert:scripts:dir" if="deploy.bsp.microejscript.dir">
 		<property name="deploy.bsp.microejscript.name" value="build"/>
 		<condition property="deploy.bsp.microejscript.extension" value="bat" else="sh">
 			<os family="windows"/>
@@ -214,10 +221,10 @@
 		<echo message="Execution of script '${deploy.bsp.microejscript.filename}' started..."/>
 
 		<exec dir="${application.output.dir}" executable="${deploy.bsp.microejscript.filename}" failonerror="true" osfamily="windows" />
-        <!-- OS family `unix` matches on both Linux and MacOS. -->
-        <exec dir="${application.output.dir}" executable="/bin/bash" failonerror="true" osfamily="unix">
-          <arg value="${deploy.bsp.microejscript.filename}" />
-        </exec>
+		<!-- OS family `unix` matches on both Linux and MacOS. -->
+		<exec dir="${application.output.dir}" executable="/bin/bash" failonerror="true" osfamily="unix">
+			<arg value="${deploy.bsp.microejscript.filename}" />
+		</exec>
 
 		<echo message="Execution of script '${deploy.bsp.microejscript.filename}' done."/>
 	</target>			

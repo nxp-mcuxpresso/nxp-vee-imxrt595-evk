@@ -1,0 +1,26 @@
+{
+  "version": "1.1",
+  "toolchainPath": "${env:ARMGCC_DIR}",
+  "toolchainVersion": "GNU Arm Embedded Toolchain 10.3-2021.10",
+  "linkedProjects": [],
+  "trustZoneType": "none",
+  "debug": {
+    "linkserver": {
+      "device": "MIMXRT595S:EVK-MIMXRT595",
+      "core": "primary"
+    },
+    "pemicro": {},
+    "segger": {
+      "device": "MIMXRT595S_M33"
+    }
+  },
+  "projectType": "sdk-freestanding",
+  "sdk": {
+    "version": "2.12.1",
+    "path": "${workspaceFolder}/nxpvee-mimxrt595-evk-round-bsp/mcux-sdk",
+    "boardId": "evkmimxrt595",
+    "deviceId": "MIMXRT595S",
+    "coreId": "cm33_MIMXRT595S",
+    "manifestId": "SDK_2.x_EVK-MIMXRT595_manifest_v3_13"
+  }
+}
