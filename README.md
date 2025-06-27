@@ -1,4 +1,66 @@
-- [NXP Platform Accelerator for i.MX RT595 EVK v2.0.0](#nxp-platform-accelerator-for-imx-rt595-evk-v200)
+# NXP Application Code Hub
+[<img src="https://mcuxpresso.nxp.com/static/icon/nxp-logo-color.svg" width="100"/>](https://www.nxp.com)
+
+## NXP Platform Accelerator for i.MX RT595 EVK
+
+NXP Platform Accelerator is a VEE (Virtual Execution Environment) that provides a hardware abstraction to develop applications in high-level programming languages such as Java.
+
+NXP Platform Accelerator is built upon [MicroEJ technology](https://www.microej.com/product/vee/)
+
+This release includes:
+
+* i.MX RT595 EVK simulator to develop VEE applications and test them on a host PC
+    * The simulator program has a graphic display of the EVK board and its LCD panel
+* The necessary recipes to embed the VEE architecture for GCC
+* Various [Foundation Libraries](https://docs.microej.com/en/latest/ApplicationDeveloperGuide/libraries.html) to provide high level libraries to developers. Notable Foundation Libraries part of this release are:
+    * [MicroUI](https://docs.microej.com/en/latest/ApplicationDeveloperGuide/UI/MicroUI/index.html#section-app-microui) to create user interfaces
+
+    * [MicroVG](https://docs.microej.com/en/latest/ApplicationDeveloperGuide/UI/MicroVG/index.html) to provide accelerated vector drawing capabilities
+
+
+
+
+* [MCUXpresso SDK](https://mcuxpresso.nxp.com/en/welcome) 2.15.100 for i.MX RT595 EVK
+* [FreeRTOS](https://www.freertos.org/index.html) version 10.5.1
+* Sample applications demonstrating NXP VEE:
+
+    * SimpleGFX: draw moving NXP coloured boxes using MicroUI
+
+
+    * AnimatedMascot: draw an animated [Android Vectordrawable](https://developer.android.com/develop/ui/views/graphics/vector-drawable-resources) image using MicroVG
+
+
+* [Mock](https://docs.microej.com/en/latest/PlatformDeveloperGuide/mock.html) support with Java stub implementations to mimick C native functions. Thanks to this mock support, the SimpleGFX application can smoothly run on the simulator
+
+#### Boards: EVK-MIMXRT595
+#### Categories: RTOS
+#### Peripherals: DISPLAY
+
+## Table of Contents
+- [Software](#software)
+- [Hardware](#hardware)
+- [Setup](#setup)
+- [Troubleshooting](#troubleshooting)
+- [Support](#support)
+- [Release Notes](#release-notes)
+
+## Software
+
+* Linux (Ubuntu 22.04/Debian 11) or Windows 10
+* Java Development Kit (Oracle JDK 11 or OpenJDK 11)
+* MICROEJ SDK
+* MCUXpresso SDK Developer (installs CMake, Ninja, West, LinkServer and ARM GNU Toolchain)
+
+## Hardware
+
+This project is used to build NXP Platform Accelerator for the [i.MX RT595 EVK](https://www.nxp.com/design/design-center/development-boards-and-design/i-mx-evaluation-and-development-boards/i-mx-rt595-evaluation-kit:MIMXRT595-EVK) with a display panel [G1120B0MIPI](https://www.nxp.com/part/G1120B0MIPI#/).
+
+![imxrt595evk](Documentation/pictures/RT595/imxrt595evk.jpg)
+![g1120b0mipi](Documentation/pictures/RT595/g1120b0mipi.jpg)
+
+
+## Setup
+
   - [MicroEJ SDK 6](#microej-sdk-6)
   - [MicroEJ SDK 5](#microej-sdk-5)
   - [VEE Port Specifications](#vee-port-specifications)
@@ -52,53 +114,13 @@
     - [Declaring and using native functions in the Java world](#declaring-and-using-native-functions-in-the-java-world)
     - [Implementing the native functions in C world](#implementing-the-native-functions-in-c-world)
     - [Implementing a mockup of the native functions for the simulator](#implementing-a-mockup-of-the-native-functions-for-the-simulator)
-  - [Get familiar with MicroEJ](#get-familiar-with-microej)
-    - [Examples](#examples)
-    - [MicroEJ Documentation](#microej-documentation)
-  - [Troubleshooting](#troubleshooting)
-    - [Setup error](#setup-error)
-      - [West update and "Filename too long" issue](#west-update-and-filename-too-long-issue)
-      - [West update and "PermissionError: \[WinError 5\] Access is denied" issue](#west-update-and-permissionerror-winerror-5-access-is-denied-issue)
-    - [License Error when building application](#license-error-when-building-application)
-      - [\[M65\] - License check failed](#m65---license-check-failed)
-    - [Flash config issue for i.MX RT595 EVK Rev. D](#flash-config-issue-for-imx-rt595-evk-rev-d)
-
-# NXP Platform Accelerator for i.MX RT595 EVK v2.0.0
-This project is used to build NXP Platform Accelerator for the [i.MX RT595 EVK](https://www.nxp.com/design/design-center/development-boards-and-design/i-mx-evaluation-and-development-boards/i-mx-rt595-evaluation-kit:MIMXRT595-EVK) with a display panel [G1120B0MIPI](https://www.nxp.com/part/G1120B0MIPI#/).
-
-![imxrt595evk](Documentation/pictures/RT595/imxrt595evk.jpg)
-![g1120b0mipi](Documentation/pictures/RT595/g1120b0mipi.jpg)
-
-NXP Platform Accelerator a VEE (Virtual Execution Environment) and provides a hardware abstraction to develop applications in high-level programming languages such as Java.
-
-NXP Platform Accelerator is built upon [MicroEJ technology](https://www.microej.com/product/vee/).
-
-This release includes:
-
-* i.MX RT595 EVK simulator to develop VEE applications and test them on a host PC
-    * The simulator program has a graphic display of the EVK board and its LCD panel
-* The necessary recipes to embed the VEE architecture for GCC
-* Various [Foundation Libraries](https://docs.microej.com/en/latest/ApplicationDeveloperGuide/libraries.html) to provide high level libraries to developers. Notable Foundation Libraries part of this release are:
-    * [MicroUI](https://docs.microej.com/en/latest/ApplicationDeveloperGuide/UI/MicroUI/index.html#section-app-microui) to create user interfaces
-
-    * [MicroVG](https://docs.microej.com/en/latest/ApplicationDeveloperGuide/UI/MicroVG/index.html) to provide accelerated vector drawing capabilities
 
 
 
 
-* [MCUXpresso SDK](https://mcuxpresso.nxp.com/en/welcome) 2.15.100 for i.MX RT595 EVK
-* [FreeRTOS](https://www.freertos.org/index.html) version 10.5.1
-* Sample applications demonstrating NXP VEE:
-
-    * SimpleGFX: draw moving NXP coloured boxes using MicroUI
 
 
-    * AnimatedMascot: draw an animated [Android Vectordrawable](https://developer.android.com/develop/ui/views/graphics/vector-drawable-resources) image using MicroVG
-
-
-* [Mock](https://docs.microej.com/en/latest/PlatformDeveloperGuide/mock.html) support with Java stub implementations to mimick C native functions. Thanks to this mock support, the SimpleGFX application can smoothly run on the simulator
-
-## MicroEJ SDK 6
+### MicroEJ SDK 6
 
 NXP Platform Accelerator is built on MicroEJ technology.
 
@@ -107,18 +129,18 @@ The SDK 6 uses Gradle plugin to compile and package MicroEJ modules.
 It allows the user to use his favourite IDE such as Android Studio or IntelliJ IDEA (see [the list of supported IDE](https://docs.microej.com/en/latest/SDK6UserGuide/install.html#install-the-ide)).
 
 SDK 6 is currently limited to the build, test and simulation of **Applications and Add-on Libraries** (see [Scope and Limitations](https://docs.microej.com/en/latest/SDK6UserGuide/limitations.html#sdk-6-limitations) for more information).
-If you need other features, such as **developping a VEE Port**, you have to use the SDK 5.
+If you need other features, such as **developing a VEE Port**, you have to use the SDK 5.
 
 If you are an application developer only and do not need to make changes to the VEE Port, you can use the SDK 6. Please click on the button below to access to the SDK 6 Getting Started on the i.MX RT595 EVK.
 
 [![sdk6-documentation](Documentation/pictures/common/sdk6-button.png)](https://docs.microej.com/en/latest/SDK6UserGuide/gettingStartedIMXRT595.html)
 
-## MicroEJ SDK 5
+### MicroEJ SDK 5
 
 If you want to modify the VEE Port, make changes to low level source code, please use SDK 5 and continue following this README.
 
 
-## VEE Port Specifications
+### VEE Port Specifications
 The architecture version is ```8.1.1```.
 
 
@@ -137,13 +159,11 @@ This VEE Port provides the following Foundation Libraries:
 |TRACE    |1.1|
 
 
-
 The VEE Port is derived into:
 * a Mono-Sandbox VEE Port (default)
 
 
-
-## Requirements
+### Requirements
 * PC with Windows 10 or higher, or Linux (tested on Debian 11)
     * Note for Mac users: this documentation does not cover Mac usage, however it is supported by the MicroEJ tools. If you are interested in Mac support, please [contact MicroEJ](https://www.microej.com/contact/#form_2).
 * Internet connection to [MicroEJ Central Repository](https://developer.microej.com/central-repository/)
@@ -154,7 +174,7 @@ The VEE Port is derived into:
 * Optionally: J-Link Debugger to flash the software
 
 
-## Directory structure
+### Directory structure
 ```
 nxp-vee-rt595
 ├───bsp
@@ -195,7 +215,7 @@ Following is a quick introduction to each folder:
 
 
 
-## Preliminary steps
+### Preliminary steps
 
 ### Get the MicroEJ SDK
 The MicroEJ SDK is an Eclipse-based IDE used to build the VEE Port and the high-level applications. The SDK can be used to run the i.MX RT595 EVK simulator.
@@ -235,7 +255,7 @@ In case of standalone installation, following versions need to be installed:
 
 
 
-## Fetch the source code
+### Fetch the source code
 
 Clone the repository with the following command:
 
@@ -249,12 +269,13 @@ you will get
 
 
 ```
-.west nxp-vee-rt595
+nxp-vee-rt595
+.west
 ```
 
 
-## MicroEJ IDE project setup
-### Import the project in a new workspace
+### MicroEJ IDE project setup
+#### Import the project in a new workspace
 Launch MicroEJ SDK and create a blank workspace.
 
 Import the cloned repository as an existing project:
@@ -296,7 +317,7 @@ Under the `source` folder of the VEE Port, you will find the following files:
 * The Simulation files are located in the `S3` and `mocks` folders. 
 * The VEE core, the MicroJVM, and some tools.
 
-## Build and run applications using the MicroEJ SDK IDE
+### Build and run applications using the MicroEJ SDK IDE
 
 Two example VEE applications are provided with this release.
 
@@ -348,7 +369,7 @@ Here is the modified `AnimatedMascot` application running in simulation:
 ![Modified Animated Mascot](Documentation/pictures/RT595/sdk_sim_modified_mascot.png)
 
 
-## Build and run applications on your i.MX RT595 EVK
+### Build and run applications on your i.MX RT595 EVK
 
 
 ### Board Setup
@@ -402,7 +423,7 @@ These artifacts are copied to the BSP project in the directory `projects/microej
 
 
 
-#### Load the project into VS Code
+### Load the project into VS Code
 Launch VS Code IDE and click on `File -> Add Folder to Workspace...`
 
 ![Add Folder to Workspace](Documentation/pictures/common/vscode_load_project.jpg)
@@ -739,29 +760,6 @@ The `org` and `name` fields can be found inside the mockup's `module.ivy` file (
 
 After any modification to the mockup project, you need to rebuild the mock (right click on the mock project and select `Build Module`) and the platform (see [Build the platform](#build-the-vee-port)).
 
-## Get familiar with MicroEJ
-
-To discover insights about MicroEJ technology, please follow some of the entry points below. In addition, you will find useful links to our documentation and our GitHub. 
-
-### Examples
-
-You can try to run other examples on our VEE Port. Here is an exhaustive list of them so that you can go further in the MicroEJ technology:
-
-* [Understand How to Build a Firmware](https://docs.microej.com/en/latest/Tutorials/tutorialUnderstandMicroEJFirmwareBuild.html): It is a document that describes the components, their dependencies, and the process involved in the build of a Firmware.
-* [Get Started With GUI](https://docs.microej.com/en/latest/Tutorials/getStartedWithGUI/index.html): It is a guided tutorial to get the basics concepts of our UI.
-* [Github resources](https://github.com/MicroEJ):
-    * How to use [foundation libraries](https://github.com/MicroEJ/Example-Standalone-Foundation-Libraries) on the Virtual Device or on board.
-    * Various examples of [how-to's](https://github.com/MicroEJ/How-To).
-    * Some [Demo projects](https://github.com/orgs/MicroEJ/repositories?q=demo&type=all&language=&sort=).
-
-
-### MicroEJ Documentation
-
-You can take a look at the MicroEJ development documentation.
-Below you can find some important chapters:
-* [Application Developer Guide](https://docs.microej.com/en/latest/ApplicationDeveloperGuide/index.html): It covers concepts essential to MicroEJ Applications design.
-* [MicroEJ VEE Port Developer Guide](https://docs.microej.com/en/latest/VEEPortingGuide/index.html): It covers the main process and configuration of a MicroEJ VEE.
-* [Tutorials](https://docs.microej.com/en/latest/Tutorials/index.html#): There are multiple tutorials to master different subjects about the MicroEJ environment (including UI development, code quality and debug, CI/CD…).
 
 ## Troubleshooting
 
@@ -814,5 +812,53 @@ By:
 .serialClkFreq   = kFlexSpiSerialClk_50MHz,
 ```
 
+## Support
+
+To discover insights about MicroEJ technology, please follow some of the entry points below. In addition, you will find useful links to our documentation and our GitHub. 
+
+### Examples
+
+You can try to run other examples on our VEE Port. Here is an exhaustive list of them so that you can go further in the MicroEJ technology:
+
+* [Understand How to Build a Firmware](https://docs.microej.com/en/latest/Tutorials/tutorialUnderstandMicroEJFirmwareBuild.html): It is a document that describes the components, their dependencies, and the process involved in the build of a Firmware.
+* [Get Started With GUI](https://docs.microej.com/en/latest/Tutorials/getStartedWithGUI/index.html): It is a guided tutorial to get the basics concepts of our UI.
+* [Github resources](https://github.com/MicroEJ):
+    * How to use [foundation libraries](https://github.com/MicroEJ/Example-Standalone-Foundation-Libraries) on the Virtual Device or on board.
+    * Various examples of [how-to's](https://github.com/MicroEJ/How-To).
+    * Some [Demo projects](https://github.com/orgs/MicroEJ/repositories?q=demo&type=all&language=&sort=).
 
 
+### MicroEJ Documentation
+
+You can take a look at the MicroEJ development documentation.
+Below you can find some important chapters:
+* [Application Developer Guide](https://docs.microej.com/en/latest/ApplicationDeveloperGuide/index.html): It covers concepts essential to MicroEJ Applications design.
+* [MicroEJ VEE Port Developer Guide](https://docs.microej.com/en/latest/VEEPortingGuide/index.html): It covers the main process and configuration of a MicroEJ VEE.
+* [Tutorials](https://docs.microej.com/en/latest/Tutorials/index.html#): There are multiple tutorials to master different subjects about the MicroEJ environment (including UI development, code quality and debug, CI/CD…).
+
+
+### Project Metadata
+
+<!----- Boards ----->
+[![Board badge](https://img.shields.io/badge/Board-EVK&ndash;MIMXRT595-blue)](https://github.com/search?q=org%3Anxp-appcodehub+EVK-MIMXRT595+in%3Areadme&type=Repositories)
+
+<!----- Categories ----->
+[![Category badge](https://img.shields.io/badge/Category-RTOS-yellowgreen)](https://github.com/search?q=org%3Anxp-appcodehub+rtos+in%3Areadme&type=Repositories)
+
+<!----- Peripherals ----->
+[![Peripheral badge](https://img.shields.io/badge/Peripheral-DISPLAY-yellow)](https://github.com/search?q=org%3Anxp-appcodehub+display+in%3Areadme&type=Repositories)
+
+Questions regarding the content/correctness of this example can be entered as Issues within this GitHub repository.
+
+>**Warning**: For more general technical questions regarding NXP Microcontrollers and the difference in expected functionality, enter your questions on the [NXP Community Forum](https://community.nxp.com/)
+
+[![Follow us on Youtube](https://img.shields.io/badge/Youtube-Follow%20us%20on%20Youtube-red.svg)](https://www.youtube.com/NXP_Semiconductors)
+[![Follow us on LinkedIn](https://img.shields.io/badge/LinkedIn-Follow%20us%20on%20LinkedIn-blue.svg)](https://www.linkedin.com/company/nxp-semiconductors)
+[![Follow us on Facebook](https://img.shields.io/badge/Facebook-Follow%20us%20on%20Facebook-blue.svg)](https://www.facebook.com/nxpsemi/)
+[![Follow us on Twitter](https://img.shields.io/badge/X-Follow%20us%20on%20X-black.svg)](https://x.com/NXP)
+
+## Release Notes
+
+| Version | Description / Update                                 | Date                        |
+|:-------:|------------------------------------------------------|----------------------------:|
+| 2.0.0     | This is the NXP VEE Port for i.MX RT595 EVK with a G1120B0MIPI circular display        | Oct 16<sup>th</sup> 2024 |
